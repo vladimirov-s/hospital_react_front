@@ -1,15 +1,17 @@
 import Header from "./Header";
 import Signup from "./Signup";
-import Login from "./Login";
-// import
+// import Login from "./Login";
 import { Hospital } from "./Pics";
+// import Records from "./Records";
+
 const Authentication = ({ headText }) => {
   return (
-    <div id='signup'>
+    <div id='authentication'>
       <Header headText={headText} />
+      {/* <Records /> */}
       <div className='flex' id='wrap'>
         <Hospital id='secLogo' />
-        {headText !== "Войти в систему" ? <Signup /> : <Login />}
+        <Signup />
       </div>
     </div>
   );

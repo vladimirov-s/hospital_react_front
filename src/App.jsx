@@ -1,6 +1,6 @@
-import Main from "./conponents/Main";
 import { Routes, Route } from "react-router-dom";
-import "./App.scss";
+import Main from "./conpoments/Main";
+import "./style/App.scss";
 
 function App() {
   return (
