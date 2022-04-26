@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-import Main from "./conpoments/Main";
+import Main from "./Components/Main";
 import "./style/App.scss";
 
 function App() {

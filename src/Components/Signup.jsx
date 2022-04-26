@@ -2,8 +2,10 @@ import { Link } from "react-router-dom";
 const Signup = () => {
   return (
     <form className='flex WrapWrap posR' id='signup'>
-      <p className='pfzinz'>Регистрация</p>
-      <div className='flex WrapWrap posA' id='bdfrm'>
+      <p className='hospitalReactStyleParagraphForRegistrationChangeSeveralStyles'>
+        Регистрация
+      </p>
+      <div className='flex WrapWrap posA' id='hospitalReactStyleBodyFormForStilization'>
         <span>Логин:</span>
         <input type='text' placeholder='Логин' />
         <span>Пароль:</span>
@@ -17,6 +19,6 @@ const Signup = () => {
       </div>
     </form>
   );
-}; 
+};
 
 export default Signup;
