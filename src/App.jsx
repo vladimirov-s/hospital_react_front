@@ -1,15 +1,20 @@
+import Main from "./conponents/Main/Main";
 import { Routes, Route } from "react-router-dom";
-import Main from "./Components/Main";
-import "./style/App.scss";
+import "./App.scss";
 
 function App() {
   return (
     <div id='App'>
       <Routes>
-        <Route path='/' element={<Main headText='Войти в систему' />} />
+        <Route
+          path='/'
+          element={<Main headText='Войти в систему' />}
+        />
         <Route
           path='/signup'
-          element={<Main headText='Зарегистрироваться в системе' />}
+          element={
+            <Main headText='Зарегистрироваться в системе' />
+          }
         />
       </Routes>
     </div>

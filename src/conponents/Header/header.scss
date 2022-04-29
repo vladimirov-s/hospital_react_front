@@ -1,0 +1,11 @@
+$shadow: 0 5px 7px 0px rgba(0, 0, 0, 0.363);
+$SecondShadow: 0 0 3px 1px #33333366;
+$radius: 3px;
+
+.header {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  box-shadow: $shadow;
+  height: 117px;
+}

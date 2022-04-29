@@ -1,0 +1,11 @@
+.main__wrap {
+  justify-content: space-around;
+  padding: 42px 0;
+  display: flex;
+
+  >svg {
+    height: 376px;
+    align-self: center;
+    margin-left: 60px;
+  }
+}

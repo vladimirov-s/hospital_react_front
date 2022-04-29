@@ -1,11 +1,10 @@
-@import "dataPicker.scss";
 $shadow: 0 5px 7px 0px rgba(0, 0, 0, 0.363);
 $SecondShadow: 0 0 3px 1px #33333366;
 $radius: 3px;
 
 @font-face {
   font-family: roboto;
-  src: url(../../src/fonts/Roboto-Thin.ttf);
+  src: url(../src/fonts/Roboto-Thin.ttf);
 }
 
 input,
@@ -37,6 +36,13 @@ button {
   &:hover {
     box-shadow: $SecondShadow;
   }
+
+  &:disabled {
+    &:hover {
+      box-shadow: none;
+      cursor: not-allowed;
+    }
+  }
 }
 
 #App {
@@ -47,6 +53,18 @@ button {
   margin: 0 auto;
   overflow-x: clip;
   font-family: roboto;
+}
+
+.wrong {
+  color: red;
+  font-weight: 700;
+  font-size: 14px;
+  min-width: calc(100% + 60px);
+  margin: 0 0 -2px -30px;
+
+  svg {
+    margin-bottom: -4px;
+  }
 }
 
 header {
@@ -69,41 +87,11 @@ header {
   }
 }
 
-#records {
-  text-transform: capitalize;
-
-  header {
-    margin-top: 10px;
-  }
-}
-
-#date {
-  position: relative;
-}
-
-#dataPicker {
-  position: absolute;
-  right: 10px;
-  width: 20px;
-
-  top: 18px;
-
-  &:hover svg {
-    fill: rgb(42, 65, 88)
-  }
-
-  svg {
-    width: 100%;
-    height: 35px;
-    margin: 0;
-  }
-}
-
-.hospitalReactStyleParagraphForRegistrationChangeSeveralStyles {
+.pfzinz {
   font-size: 36px;
 }
 
-#hospitalReactStyleBodyFormForStilization {
+#bdfrm {
   top: 112px;
   max-width: 81%;
   margin-left: 40px;
@@ -118,26 +106,17 @@ header {
     text-align: left;
     font-weight: 800;
   }
-}
 
-#addNewRec {
-  margin-top: 17px;
-}
+  input {
+    line-height: 1.9;
+    font-size: inherit;
+    border-color: #22222238;
 
-input {
-  line-height: 1.9;
-  font-size: inherit;
-  border-color: #22222238;
-
-  &::placeholder {
-    color: #22222a80;
-  }
-
-  &:hover {
-    box-shadow: $SecondShadow;
+    &::placeholder {
+      color: #22222a80;
+    }
   }
 }
-
 
 form {
   width: 400px;
@@ -155,11 +134,7 @@ form {
   padding: 42px 0;
 }
 
-#secLogo {
-  height: 376px;
-  align-self: center;
-  margin-left: 60px;
-}
+
 
 .posA {
   position: absolute;
@@ -177,7 +152,12 @@ form {
   flex-wrap: wrap;
 }
 
-.nigniyBlok {
+#showPassword {
+  bottom: 3px;
+  right: 5px;
+}
+
+.botBlck {
   bottom: 25px;
   max-width: 50%;
   right: 10px;
