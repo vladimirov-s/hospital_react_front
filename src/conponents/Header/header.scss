@@ -3,9 +3,46 @@ $SecondShadow: 0 0 3px 1px #33333366;
 $radius: 3px;
 
 .header {
-  display: flex;
   justify-content: flex-start;
   align-items: center;
   box-shadow: $shadow;
   height: 117px;
+
+  h2 {
+    font-size: 32px;
+    letter-spacing: 1px;
+  }
+
+  svg {
+    height: 90px;
+    width: 98px;
+    margin: 0 80px 0 30px;
+    overflow-x: overlay;
+  }
+}
+
+@media (max-width:550px) {
+  .header {
+    svg {
+      transform: scale(.7);
+    }
+  }
+
+  .header__h2 {
+    font-size: 28px;
+    letter-spacing: 0;
+  }
+}
+
+@media (max-width:800px) {
+  .header {
+    svg {
+      margin: 0;
+      transform: scale(.85);
+    }
+  }
+
+  .header__h2 {
+    font-size: 30px;
+  }
 }

@@ -1,18 +1,39 @@
+import { useForm } from "react-hook-form";
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import "./signup.scss";
+
 const Signup = () => {
+  const [showPass, setShowPass] = useState("password");
   return (
-    <form className='flex WrapWrap posR' id='signup'>
-      <p className='pfzinz'>Регистрация</p>
-      <div className='flex WrapWrap posA' id='bdfrm' >
-        <span>Логин:</span>
-        <input type='text' placeholder='Логин' />
-        <span>Пароль:</span>
-        <input type='password' placeholder='Пароль' />
-        <span>Повторите пароль:</span>
-        <input type='password' placeholder='Пароль' />
+    <form className='auth__form flex WrapWrap relative' id='signup'>
+      <p className='auth__form__paragraph'>Регистрация</p>
+      <div className='auth__form__bodyForm flex WrapWrap absolute'>
+        <span className='auth__form_loginandpasswd'>Логин:</span>
+        <input
+          className='auth__form__inpt'
+          type='text'
+          placeholder='username'
+        />
+        <span className='auth__form_loginandpasswd'>Пароль:</span>
+        <input
+          className='auth__form__inpt'
+          type='password'
+          placeholder='password'
+        />
+        <span className='auth__form_loginandpasswd'>
+          Повторите пароль:
+        </span>
+        <input
+          className='auth__form__inpt'
+          type='password'
+          placeholder='password'
+        />
       </div>
-      <div className='botBlck posA'>
-        <button className='posR'>Зарегистрироваться</button>
+      <div className='auth__form__botBlck absolute'>
+        <button type='submit' className='auth__form__submit relative'>
+          Зарегистрироваться
+        </button>
         <Link to='/'> Авторизоваться </Link>
       </div>
     </form>

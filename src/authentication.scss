@@ -1,0 +1,71 @@
+.auth__form {
+  width: 400px;
+  min-width: 320px;
+  height: 453px;
+  background-color: #fff;
+
+  >* {
+    flex: 100%;
+  }
+}
+
+.auth__form__wrong {
+  color: red;
+  font-weight: 700;
+  font-size: 14px;
+  min-width: calc(100% + 60px);
+  margin: 0 0 -2px -30px;
+
+  svg {
+    margin-bottom: -4px;
+  }
+}
+
+.auth__form__paragraph {
+  font-size: 36px;
+}
+
+.auth__form__bodyForm {
+  top: 112px;
+  max-width: 81%;
+  margin-left: 40px;
+  font-size: 18px;
+
+  >* {
+    flex: 100%;
+  }
+}
+
+.auth__form_showPassword {
+  bottom: 3px;
+  right: 5px;
+}
+
+.auth__form__inpt {
+  line-height: 1.9;
+  font-size: inherit;
+  border-color: #22222238;
+
+  &::placeholder {
+    color: #22222a80;
+  }
+}
+
+.auth__form_loginandpasswd {
+  padding: 10px 0 5px 0;
+  text-align: left;
+  font-weight: 800;
+}
+
+.auth__form__botBlck {
+  bottom: 25px;
+  max-width: 50%;
+  right: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.auth__form__submit {
+  margin-bottom: 5px;
+}

@@ -3,7 +3,7 @@ import "./header.scss";
 
 const Header = ({ headText }) => {
   return (
-    <header className='header'>
+    <header className='header flex'>
       <Hospital need='logo' />
       <h2 className='header__h2'>{headText}</h2>
     </header>

@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import AssignmentLateTwoToneIcon from "@mui/icons-material/AssignmentLateTwoTone";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import "./login.scss";
 
 const Login = () => {
   const [showPass, setShowPass] = useState("password");
@@ -19,25 +20,24 @@ const Login = () => {
   });
 
   const onSubmit = e => {
-    console.log(errors);
     reset();
   };
 
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className='flex WrapWrap posR'
-      id='login'>
-      <p className='pfzinz'>Войти в систему </p>
-      <div className='flex WrapWrap posA' id='bdfrm'>
-        <span>Логин:</span>
+      className='auth__form flex WrapWrap relative'>
+      <p className='auth__form__paragraph'>Войти в систему </p>
+      <div className='auth__form__bodyForm flex WrapWrap absolute'>
+        <span className='auth__form_loginandpasswd'>Логин:</span>
         {errors?.username && (
-          <i className='wrong'>
+          <i className='auth__form__wrong'>
             <AssignmentLateTwoToneIcon />
             {errors?.username?.message || "Error!"}
           </i>
         )}
         <input
+          className='auth__form__inpt'
           placeholder='username'
           autoComplete='off'
           {...register("username", {
@@ -48,26 +48,26 @@ const Login = () => {
             },
           })}
         />
-        <span>Пароль:</span>
+        <span className='auth__form_loginandpasswd'>Пароль:</span>
         {errors?.password && (
-          <i className='wrong'>
+          <i className='auth__form__wrong'>
             <AssignmentLateTwoToneIcon />
             {errors?.password?.message || "Error!"}
           </i>
         )}
         <input
+          className='auth__form__inpt'
           type={showPass}
           name='password'
-          placeholder='Пароль'
+          placeholder='password'
           {...register("password", {
-            required: "минимум 4 символа",
             pattern: {
-              value: /^[a-zA-Z0-9]{4,15}$/,
+              value: /^[a-zA-Z0-9]{6,15}$/,
               message: "латинские буквы и цифры",
             },
             minLength: {
-              value: 4,
-              message: " латинские буквы или цифры",
+              value: 6,
+              message: " Минимум 6 символов",
             },
             maxLength: {
               value: 15,
@@ -76,20 +76,30 @@ const Login = () => {
           })}
         />
         <i
-          title='Показать пароль'
+          title={
+            showPass !== "text" ? "Показать пароль" : "Скрыть пароль"
+          }
           onClick={() => {
-            showPass !== "text" ? setShowPass("text") : setShowPass("password");
+            showPass !== "text"
+              ? setShowPass("text")
+              : setShowPass("password");
           }}
-          className='posA'
-          id='showPassword'>
-          {showPass !== "text" ? <RemoveRedEyeIcon /> : <VisibilityOffIcon />}
+          className='auth__form_showPassword absolute'>
+          {showPass !== "text" ? (
+            <RemoveRedEyeIcon />
+          ) : (
+            <VisibilityOffIcon />
+          )}
         </i>
       </div>
-      <div className='botBlck posA'>
-        <button type='submit' disabled={!isValid} className='posR'>
+      <div className='auth__form__botBlck absolute'>
+        <button
+          type='submit'
+          disabled={!isValid}
+          className='auth__form__submit relative'>
           Вход
         </button>
-        <Link to='/signup'> Зарегистрироваться </Link>
+        <Link to='/signup'>Зарегистрироваться</Link>
       </div>
     </form>
   );
