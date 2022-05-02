@@ -1,5 +1,5 @@
-import Main from "./conponents/Main/Main";
 import { Routes, Route } from "react-router-dom";
+import Main from "./conponents/Main/Main";
 import "./App.scss";
 
 function App() {
@@ -12,9 +12,7 @@ function App() {
         />
         <Route
           path='/signup'
-          element={
-            <Main headText='Зарегистрироваться в системе' />
-          }
+          element={<Main headText='Зарегистрироваться в системе' />}
         />
       </Routes>
     </div>

@@ -11,13 +11,13 @@ const Signup = () => {
       <div className='auth__form__bodyForm flex WrapWrap absolute'>
         <span className='auth__form_loginandpasswd'>Логин:</span>
         <input
-          className='auth__form__inpt'
+          className='auth__form__textfield'
           type='text'
           placeholder='username'
         />
         <span className='auth__form_loginandpasswd'>Пароль:</span>
         <input
-          className='auth__form__inpt'
+          className='auth__form__textfield'
           type='password'
           placeholder='password'
         />
@@ -25,12 +25,12 @@ const Signup = () => {
           Повторите пароль:
         </span>
         <input
-          className='auth__form__inpt'
+          className='auth__form__textfield'
           type='password'
           placeholder='password'
         />
       </div>
-      <div className='auth__form__botBlck absolute'>
+      <div className='auth__form__botomblok absolute'>
         <button type='submit' className='auth__form__submit relative'>
           Зарегистрироваться
         </button>

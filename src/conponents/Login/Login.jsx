@@ -37,7 +37,7 @@ const Login = () => {
           </i>
         )}
         <input
-          className='auth__form__inpt'
+          className='auth__form__textfield'
           placeholder='username'
           autoComplete='off'
           {...register("username", {
@@ -56,7 +56,7 @@ const Login = () => {
           </i>
         )}
         <input
-          className='auth__form__inpt'
+          className='auth__form__textfield'
           type={showPass}
           name='password'
           placeholder='password'
@@ -92,7 +92,7 @@ const Login = () => {
           )}
         </i>
       </div>
-      <div className='auth__form__botBlck absolute'>
+      <div className='auth__form__botomblok absolute'>
         <button
           type='submit'
           disabled={!isValid}
