@@ -9,3 +9,19 @@
     margin-left: 60px;
   }
 }
+
+@media (max-width:550px) {
+  .main__wrap {
+    svg {
+      display: none;
+    }
+  }
+}
+
+@media (max-width:800px) {
+  .main__wrap {
+    svg {
+      margin-left: 0;
+    }
+  }
+}

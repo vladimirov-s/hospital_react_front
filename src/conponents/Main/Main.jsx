@@ -3,6 +3,7 @@ import Signup from "../Signup/Signup";
 import Login from "./../Login/Login";
 import "./main.scss";
 import { Hospital } from "../Pics";
+
 const Authentication = ({ headText }) => {
   return (
     <div className='main'>
