@@ -1,89 +1,121 @@
-import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useState, useEffect } from "react";
+import Snack from "../Snack/Snack";
 import { Link } from "react-router-dom";
-// import { Link, useNavigate } from "react-router-dom";
-// import axios from "axios";
-import AssignmentLateTwoToneIcon from "@mui/icons-material/AssignmentLateTwoTone";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import "./login.scss";
 
 const Login = () => {
   const [showPass, setShowPass] = useState("password");
-  const {
-    register,
-    formState: { errors, isValid },
-    handleSubmit,
-    reset,
-  } = useForm({
-    mode: "onBlur",
-  });
+  const [notice, setNotice] = useState("");
+  const [open, setOpen] = useState(false);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [isValid, setIsValid] = useState(false);
+  const [errors, setErrors] = useState({});
 
-  const onSubmit = e => {
-    reset();
+  const onSubmit = e => {};
+  useEffect(() => {
+    if (errors.password) {
+      setNotice(errors.password);
+      setOpen(true);
+    } else if (errors.username) {
+      setNotice(errors.username);
+      setOpen(true);
+    } else {
+      setOpen(false);
+    }
+  }, [errors]);
+
+  const showPassfunction = () => {
+    showPass !== "text"
+      ? setShowPass("text")
+      : setShowPass("password");
+  };
+
+  const blurHandler = e => {
+    const temp = e.target.name;
+    console.log(errors);
+    switch (temp) {
+      case "username":
+        const reg = /^[a-zA-Z]{2,20}$/;
+        if (!reg.test(String(username))) {
+          setErrors({
+            ...errors,
+            username:
+              "Поле Login должно быть от 2 символов, разрешены только латинские буквы",
+          });
+          setIsValid(false);
+          break;
+        } else {
+          setErrors({
+            ...errors,
+            username: "",
+          });
+        }
+        break;
+      case "password":
+        const regForPass = /^[a-zA-Z0-9]{6,12}$/;
+        if (!regForPass.test(String(password))) {
+          setErrors({
+            ...errors,
+            password:
+              "Пароль должен быть от 6 до 12 символов латинские буквы и цифры",
+          });
+          setIsValid(false);
+          break;
+        } else {
+          setErrors(username, {
+            ...errors,
+            password: "",
+          });
+        }
+      default:
+        setIsValid(true);
+    }
   };
 
   return (
     <form
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={() => onSubmit()}
       className='auth__form flex WrapWrap relative'>
       <p className='auth__form__paragraph'>Войти в систему </p>
       <div className='auth__form__bodyForm flex WrapWrap absolute'>
-        <span className='auth__form_loginandpasswd'>Логин:</span>
-        {errors?.username && (
-          <i className='auth__form__wrong'>
-            <AssignmentLateTwoToneIcon />
-            {errors?.username?.message || "Error!"}
-          </i>
-        )}
-        <input
-          className='auth__form__textfield'
-          placeholder='username'
-          autoComplete='off'
-          {...register("username", {
-            required: "Поле должно содержать минимум 2 символа",
-            minLength: {
-              value: 2,
-              message: "минимум 2 символа",
-            },
-          })}
-        />
-        <span className='auth__form_loginandpasswd'>Пароль:</span>
-        {errors?.password && (
-          <i className='auth__form__wrong'>
-            <AssignmentLateTwoToneIcon />
-            {errors?.password?.message || "Error!"}
-          </i>
-        )}
-        <input
-          className='auth__form__textfield'
-          type={showPass}
-          name='password'
-          placeholder='password'
-          {...register("password", {
-            pattern: {
-              value: /^[a-zA-Z0-9]{6,15}$/,
-              message: "латинские буквы и цифры",
-            },
-            minLength: {
-              value: 6,
-              message: " Минимум 6 символов",
-            },
-            maxLength: {
-              value: 15,
-              message: "15 символов вполне достаточно будет",
-            },
-          })}
-        />
+        <label className='auth__form_loginandpassword flex WrapWrap'>
+          Логин:
+          <input
+            className={
+              (errors?.username &&
+                "auth__form__textfield wrongtextfield") ||
+              "auth__form__textfield"
+            }
+            name='username'
+            placeholder='username'
+            autoComplete='off'
+            onKeyUp={e => setUsername(e.target.value)}
+            onBlur={e => blurHandler(e)}
+          />
+        </label>
+        <label className='auth__form_loginandpassword flex WrapWrap relative'>
+          Пароль:
+          <input
+            className={
+              (errors?.password &&
+                "auth__form__textfield wrongtextfield") ||
+              "auth__form__textfield"
+            }
+            type={showPass}
+            name='password'
+            placeholder='password'
+            onKeyUp={e => setPassword(e.target.value)}
+            onBlur={e => blurHandler(e)}
+          />
+        </label>
         <i
           title={
             showPass !== "text" ? "Показать пароль" : "Скрыть пароль"
           }
-          onClick={() => {
-            showPass !== "text"
-              ? setShowPass("text")
-              : setShowPass("password");
-          }}
+          onClick={() => showPassfunction()}
           className='auth__form_showPassword absolute'>
           {showPass !== "text" ? (
             <RemoveRedEyeIcon />
@@ -101,6 +133,12 @@ const Login = () => {
         </button>
         <Link to='/signup'>Зарегистрироваться</Link>
       </div>
+      <Snack
+        open={open}
+        setOpen={setOpen}
+        severity='warning'
+        message={notice}
+      />
     </form>
   );
 };
