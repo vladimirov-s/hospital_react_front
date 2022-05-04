@@ -23,6 +23,7 @@ const Login = () => {
     reset();
   };
   useEffect(() => {
+    console.log(errors);
     if (errors.password) {
       setNotice(errors.password.message);
       setOpen(true);

@@ -1,5 +1,4 @@
-import Snack from "../Snack/Snack";
-import { useForm } from "react-hook-form";
+// import Snack from "../Snack/Snack";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
@@ -8,20 +7,20 @@ import "./signup.scss";
 
 const Signup = () => {
   const [showPass, setShowPass] = useState("password");
-  const [notice, setNotice] = useState("");
-  const [secondPass, setSecondPass] = useState("");
-  const [open, setOpen] = useState(false);
-  const {
-    register,
-    formState: { errors, isValid },
-    handleSubmit,
-    reset,
-  } = useForm({
-    mode: "onBlur",
+  // const [notice, setNotice] = useState("");
+  // const [open, setOpen] = useState(false);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [secondPassword, setSecondPassword] = useState("");
+  const [isValid, setIsValid] = useState(false);
+  const [errors, setErrors] = useState({
+    username: "",
+    password: "",
+    secondPassword: "",
   });
 
   const onSubmit = e => {
-    reset();
+    console.log(e);
   };
 
   const showPassfunction = () => {
@@ -30,9 +29,72 @@ const Signup = () => {
       : setShowPass("password");
   };
 
+  const blurHandler = () => {
+    console.log(
+      `username-${username}`,
+      `username-${username}`,
+      `password- ${password}`
+    );
+
+    for (const key in errors) {
+      console.log(key);
+      switch (key) {
+        case "username":
+          const reg = /^[a-zA-Z0-9]{2,20}$/;
+          if (!reg.test(String(key))) {
+            setErrors({
+              ...errors,
+              username:
+                "Поле Login должно быть от 2 символов, разрешены только латинские буквы",
+            });
+            break;
+          } else {
+            setErrors({
+              ...errors,
+              username: "",
+            });
+          }
+          break;
+        case "password":
+          const regForPass = /^[a-zA-Z0-9]{6,12}$/;
+          if (
+            !regForPass.test(String(key)) &&
+            password === secondPassword
+          ) {
+            setErrors({
+              ...errors,
+              password:
+                "Пароль должен быть от 6 до 12 символов латинские буквы и цифры",
+            });
+            break;
+          } else {
+            setErrors(username, {
+              ...errors,
+              password: "",
+            });
+          }
+        case "secondPassword":
+          if (password !== secondPassword) {
+            setErrors({
+              ...errors,
+              password: "Введённые пароли должны совпадать",
+            });
+            break;
+          } else {
+            setErrors({
+              ...errors,
+              password: "",
+            });
+          }
+        default:
+      }
+    }
+    onSubmit(errors);
+  };
+
   return (
     <form
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={() => onSubmit}
       className='auth__form flex WrapWrap relative'
       id='signup'>
       <p className='auth__form__paragraph'>Регистрация</p>
@@ -47,15 +109,10 @@ const Signup = () => {
             }
             type='text'
             placeholder='username'
+            name='username'
             autoComplete='off'
-            {...register("username", {
-              required:
-                "Поле username должно содержать минимум 2 символа",
-              minLength: {
-                value: 2,
-                message: "минимум 2 символа",
-              },
-            })}
+            onKeyUp={e => setUsername(e.target.value)}
+            onBlur={() => blurHandler()}
           />
         </label>
 
@@ -68,22 +125,10 @@ const Signup = () => {
               "auth__form__textfield"
             }
             type={showPass}
+            name='password'
             placeholder='password'
-            {...register("password", {
-              required: "Это поле надо бы заполнить",
-              pattern: {
-                value: /^[a-zA-Z0-9]{6,15}$/,
-                message: "латинские буквы и цифры",
-              },
-              minLength: {
-                value: 6,
-                message: " Минимум 6 символов",
-              },
-              maxLength: {
-                value: 15,
-                message: "15 символов вполне достаточно будет",
-              },
-            })}
+            onKeyUp={e => setPassword(e.target.value)}
+            onBlur={() => blurHandler()}
           />
           <i
             title={
@@ -110,10 +155,11 @@ const Signup = () => {
               "auth__form__textfield"
             }
             type={showPass}
+            name='secondPassword'
             placeholder='password'
-            onBlur={e => {
-              if (e.target.value !== errors.password) {
-              }
+            onKeyUp={e => setSecondPassword(e.target.value)}
+            onBlur={() => {
+              blurHandler();
             }}
           />
         </label>
@@ -127,12 +173,12 @@ const Signup = () => {
         </button>
         <Link to='/'> Авторизоваться </Link>
       </div>
-      <Snack
+      {/* <Snack
         open={open}
         setOpen={setOpen}
         severity='warning'
         message={notice}
-      />
+      /> */}
     </form>
   );
 };
