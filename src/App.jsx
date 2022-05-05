@@ -1,8 +1,8 @@
 import { Routes, Route } from "react-router-dom";
-import Main from "./conponents/Main/Main";
+import Main from ".//components/Main/Main";
 import "./App.scss";
 
-function App() {
+const App = () => {
   return (
     <div id='App'>
       <Routes>
@@ -17,6 +17,6 @@ function App() {
       </Routes>
     </div>
   );
-}
+};
 
 export default App;

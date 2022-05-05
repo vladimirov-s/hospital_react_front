@@ -1,34 +1,28 @@
 import { useState, useEffect } from "react";
-import Snack from "../Snack/Snack";
-import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import Snack from "/home/user/sergeech/hospital_react_front/src/components/Snack/Snack";
 import "./login.scss";
 
 const Login = () => {
   const [showPass, setShowPass] = useState("password");
   const [notice, setNotice] = useState("");
   const [open, setOpen] = useState(false);
-  const {
-    register,
-    formState: { errors, isValid },
-    handleSubmit,
-    reset,
-  } = useForm({
-    mode: "onBlur",
+  const [userfield, setUserField] = useState({
+    username: "",
+    password: "",
   });
+  const [isValid, setIsValid] = useState(false);
+  const [errors, setErrors] = useState({});
 
-  const onSubmit = e => {
-    reset();
-  };
+  const onSubmit = e => {};
   useEffect(() => {
-    console.log(errors);
     if (errors.password) {
-      setNotice(errors.password.message);
+      setNotice(errors.password);
       setOpen(true);
     } else if (errors.username) {
-      setNotice(errors.username.message);
+      setNotice(errors.username);
       setOpen(true);
     } else {
       setOpen(false);
@@ -41,13 +35,54 @@ const Login = () => {
       : setShowPass("password");
   };
 
+  const blurHandler = e => {
+    const candidate = e.target.name;
+    switch (candidate) {
+      case "username":
+        const reg = /^[a-zA-Z]{6,20}$/;
+        if (!reg.test(String(userfield.username))) {
+          setErrors({
+            ...errors,
+            username:
+              "Поле Login должно быть от 6 символов, разрешены только латинские буквы",
+          });
+          setIsValid(false);
+          break;
+        } else {
+          setErrors({
+            ...errors,
+            username: "",
+          });
+        }
+        break;
+      case "password":
+        const regForPass = /^[a-zA-Z0-9]{6,12}$/;
+        if (!regForPass.test(String(userfield.password))) {
+          setErrors({
+            ...errors,
+            password:
+              "Пароль должен быть от 6 до 12 символов латинские буквы и цифры",
+          });
+          setIsValid(false);
+          break;
+        } else {
+          setErrors({
+            ...errors,
+            password: "",
+          });
+        }
+      default:
+        setIsValid(true);
+    }
+  };
+
   return (
     <form
-      onSubmit={handleSubmit(onSubmit)}
-      className='auth__form flex WrapWrap relative'>
+      onSubmit={() => onSubmit()}
+      className='auth__form flex flwrap relative'>
       <p className='auth__form__paragraph'>Войти в систему </p>
-      <div className='auth__form__bodyForm flex WrapWrap absolute'>
-        <label className='auth__form_loginandpassword flex WrapWrap'>
+      <div className='auth__form__bodyForm flex flwrap absolute'>
+        <label className='auth__form_loginandpassword flex flwrap'>
           Логин:
           <input
             className={
@@ -55,19 +90,16 @@ const Login = () => {
                 "auth__form__textfield wrongtextfield") ||
               "auth__form__textfield"
             }
+            name='username'
             placeholder='username'
             autoComplete='off'
-            {...register("username", {
-              required:
-                "Поле username должно содержать минимум 2 символа",
-              minLength: {
-                value: 2,
-                message: "минимум 2 символа",
-              },
-            })}
+            onKeyUp={e =>
+              setUserField({ ...userfield, username: e.target.value })
+            }
+            onBlur={e => blurHandler(e)}
           />
         </label>
-        <label className='auth__form_loginandpassword flex WrapWrap relative'>
+        <label className='auth__form_loginandpassword flex flwrap relative'>
           Пароль:
           <input
             className={
@@ -78,21 +110,10 @@ const Login = () => {
             type={showPass}
             name='password'
             placeholder='password'
-            {...register("password", {
-              required: "Это поле надо бы заполнить",
-              pattern: {
-                value: /^[a-zA-Z0-9]{6,15}$/,
-                message: "латинские буквы и цифры",
-              },
-              minLength: {
-                value: 6,
-                message: " Минимум 6 символов",
-              },
-              maxLength: {
-                value: 15,
-                message: "15 символов вполне достаточно будет",
-              },
-            })}
+            onKeyUp={e =>
+              setUserField({ ...userfield, password: e.target.value })
+            }
+            onBlur={e => blurHandler(e)}
           />
         </label>
         <i
