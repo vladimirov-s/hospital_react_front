@@ -3,8 +3,13 @@ import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import Snack from "/home/user/sergeech/hospital_react_front/src/components/Snack/Snack";
+import Snack from "components/Snack/Snack";
 import "./signup.scss";
+import {
+  url,
+  userNameValidate,
+  passwValidate,
+} from "components/helper/constAndValidate";
 
 const Signup = () => {
   const nav = useNavigate();
@@ -23,18 +28,24 @@ const Signup = () => {
     secondPassword: "",
   });
 
-  const onSubmit = e => {
+  const registr = e => {
+    e.preventDefault();
     if (isValid) {
-      axios({
-        method: "POST",
-        url: "http://localhost:5001/api/registration",
-        data: {
-          name: userfield.username,
-          password: userfield.password,
-        },
-      }).then(res => {
-        console.log(res);
-      });
+      const { username, password } = userfield;
+      axios
+        .post(`${url}/registration`, {
+          name: username,
+          password: password,
+        })
+        .then(res => {
+          console.log(res);
+          localStorage.setItem(
+            "accesToken",
+            res.data.token.accessToken
+          );
+          nav("/appointments");
+        })
+        .catch(err => console.error(err));
     }
   };
 
@@ -46,77 +57,79 @@ const Signup = () => {
 
   const blurHandler = e => {
     const candidate = e.target.name;
-    switch (candidate) {
-      case "username":
-        const reg = /^[a-zA-Z]{6,20}$/;
-        if (!reg.test(String(userfield.username))) {
-          setErrors({
-            ...errors,
-            username:
-              "Поле Login должно быть от 6 символов, разрешены только латинские буквы",
-          });
-          setIsValid(false);
-          break;
-        } else {
-          setErrors({
-            ...errors,
-            username: "",
-          });
-        }
-        break;
-      case "password":
-        const regForPass = /^[a-zA-Z0-9]{6,12}$/;
-        if (!regForPass.test(String(userfield.password))) {
-          setErrors({
-            ...errors,
-            password:
-              "Пароль должен быть от 6 до 12 символов латинские буквы и цифры",
-          });
-          setIsValid(false);
-          break;
-        } else {
-          setErrors({
-            ...errors,
-            password: "",
-          });
-        }
-      case "secondPassword":
-        if (userfield.password !== userfield.secondPassword) {
-          setErrors({
-            ...errors,
-            secondPassword: "Введённые пароли должны совпадать",
-          });
-          setIsValid(false);
-        } else {
-          setErrors({
-            ...errors,
-            secondPassword: "",
-          });
-        }
-      default:
-        tryValidSetState();
+    const { username, password, secondPassword } = userfield;
+    if (candidate === "username") {
+      if (userNameValidate(username)) {
+        setErrors({
+          ...errors,
+          username: "",
+        });
+      } else {
+        setErrors({
+          ...errors,
+          username:
+            "Поле Login должно быть от 6 символов, разрешены только латинские буквы",
+        });
+        setIsValid(false);
+      }
     }
+    if (candidate === "password") {
+      if (passwValidate(password)) {
+        setErrors({
+          ...errors,
+          password: "",
+        });
+      } else {
+        setErrors({
+          ...errors,
+          password:
+            "Пароль должен быть от 6 до 12 символов латинские буквы и цифры",
+        });
+        setIsValid(false);
+      }
+    }
+    if (candidate === "secondPassword") {
+      if (secondPassword === password) {
+        setErrors({
+          ...errors,
+          secondPassword: "",
+        });
+      } else {
+        setErrors({
+          ...errors,
+          secondPassword: "Введённые пароли должны совпадать",
+        });
+        setIsValid(false);
+      }
+    }
+
+    tryValidSetState();
   };
 
   const tryValidSetState = () => {
+    const { username, password, secondPassword } = userfield;
     if (
       !errors.password &&
       !errors.username &&
       !errors.secondPassword &&
-      userfield.username &&
-      userfield.password &&
-      userfield.secondPassword
+      username &&
+      password &&
+      secondPassword
     ) {
       setIsValid(true);
     }
   };
 
   useEffect(() => {
-    if (errors.password) {
-      setNotice(errors.password);
+    const { username, password, secondPassword } = errors;
+    if (password) {
+      setNotice(password);
       setOpen(true);
-    } else if (errors.username) {
-      setNotice(errors.username);
+    } else if (username) {
+      setNotice(username);
+      setOpen(true);
+    } else if (secondPassword) {
+      setNotice(secondPassword);
       setOpen(true);
     } else {
       setOpen(false);
@@ -124,7 +137,9 @@ const Signup = () => {
   }, [errors]);
 
   return (
-    <form className='auth__form flex flwrap relative'>
+    <form
+      className='auth__form flex flwrap relative'
+      onSubmit={registr}>
       <p className='auth__form__paragraph'>Регистрация</p>
       <div className='auth__form__bodyForm flex flwrap absolute'>
         <label className='auth__form_loginandpassword flex flwrap'>
@@ -141,7 +156,10 @@ const Signup = () => {
             autoComplete='off'
             value={userfield.username}
             onChange={e =>
-              setUserField({ ...userfield, username: e.target.value })
+              setUserField({
+                ...userfield,
+                username: e.target.value,
+              })
             }
             onBlur={e => blurHandler(e)}
           />
@@ -159,9 +177,12 @@ const Signup = () => {
             name='password'
             placeholder='password'
             value={userfield.password}
-            onChange={e =>
-              setUserField({ ...userfield, password: e.target.value })
-            }
+            onChange={e => {
+              setUserField({
+                ...userfield,
+                password: e.target.value,
+              });
+            }}
             onBlur={e => blurHandler(e)}
           />
           <i
@@ -192,12 +213,12 @@ const Signup = () => {
             name='secondPassword'
             placeholder='password'
             value={userfield.secondPassword}
-            onChange={e =>
+            onChange={e => {
               setUserField({
                 ...userfield,
                 secondPassword: e.target.value,
-              })
-            }
+              });
+            }}
             onBlur={e => blurHandler(e)}
           />
         </label>
@@ -205,7 +226,6 @@ const Signup = () => {
       <div className='auth__form__botomblok absolute'>
         <button
           disabled={!isValid}
-          onClick={() => onSubmit}
           className='auth__form__submit relative'>
           Зарегистрироваться
         </button>

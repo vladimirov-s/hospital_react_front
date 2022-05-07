@@ -1,8 +1,8 @@
-import Header from "/home/user/sergeech/hospital_react_front/src/components/Header/Header";
-import Signup from "/home/user/sergeech/hospital_react_front/src/components/Signup/Signup";
-import Login from "/home/user/sergeech/hospital_react_front/src/components/Login/Login";
+import Header from "components/Header/Header";
+import Signup from "components/Signup/Signup";
+import Login from "components/Login/Login";
+import { Hospital } from "components/pics";
 import "./main.scss";
-import { Hospital } from "/home/user/sergeech/hospital_react_front/src/components/Pics";
 
 const Authentication = ({ headText }) => {
   return (

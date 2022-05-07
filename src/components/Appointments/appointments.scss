@@ -1,0 +1,76 @@
+.appoint__headwrapform {
+  box-shadow: 0 0 10px 0px #545461;
+  margin: 12px 0;
+
+}
+
+.appoint__form {
+  display: grid;
+  grid-template-columns: 3fr 3fr 3fr 3fr 2fr;
+  height: 117px;
+  margin: 0 auto;
+  width: calc(100% - 40px);
+}
+
+.appoint__labl_flex {
+  position: relative;
+  top: 28px;
+  text-align: start;
+  font-size: 20px;
+
+  >input {
+    line-height: 2.2;
+    width: 81%;
+    min-width: 120px;
+  }
+
+  >button {
+    position: relative;
+    top: 23px;
+    left: 28px;
+  }
+}
+
+.appoint__list {
+  width: calc(100% - 40px);
+  margin: 0 0 20px 20px;
+}
+
+.appoint__column {
+  display: grid;
+  grid-template-columns: 5fr 5fr 3fr 3fr 3fr;
+
+  ul {
+    padding: 0;
+    margin: 0;
+  }
+}
+
+.appoint__headlist,
+.appoint__textvalue {
+  list-style-type: none;
+}
+
+.appoint__headlist {
+  background-color: #C4C4C4;
+  min-height: 30px;
+  padding-top: 10px;
+  font-size: 20px;
+}
+
+.appoint__textvalue:nth-child(2) {
+  border-top: 1px solid black;
+}
+
+.appoint__textvalue:last-child {
+  border-bottom: 1px solid black;
+}
+
+.appoint__textvalue {
+  border-right: 1px solid #000;
+  border-left: 1px solid #000;
+}
+
+.appoint__textvalue {
+  background-color: white;
+}
