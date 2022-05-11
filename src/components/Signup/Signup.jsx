@@ -137,7 +137,7 @@ const Signup = () => {
   }, [errors]);
 
   return (
-    <>
+    <div>
       <form className='auth__form' onSubmit={registr}>
         <p className='auth__form__paragraph'>Регистрация</p>
         <div className='auth__form__bodyForm'>
@@ -235,7 +235,7 @@ const Signup = () => {
           message={notice}
         />
       </form>
-    </>
+    </div>
   );
 };
 

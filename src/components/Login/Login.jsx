@@ -27,7 +27,7 @@ const Login = () => {
     password: "",
   });
 
-  const onSubmit = (e) => {
+  const register = (e) => {
     e.preventDefault();
     if (isValid) {
       const { username, password } = userfield;
@@ -117,8 +117,8 @@ const Login = () => {
   };
 
   return (
-    <>
-      <form onSubmit={onSubmit} className='auth__form'>
+    <div>
+      <form onSubmit={register} className='auth__form'>
         <p className='auth__form__paragraph'>Войти в систему </p>
         <div className='auth__form__bodyForm'>
           <label className='auth__form_loginandpassword'>
@@ -191,7 +191,7 @@ const Login = () => {
           message={notice}
         />
       </form>
-    </>
+    </div>
   );
 };
 
