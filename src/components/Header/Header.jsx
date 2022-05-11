@@ -16,13 +16,14 @@ const Header = ({ headText, logout }) => {
       .post(`${url}/logout`, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
+          withCredentials: true,
         },
       })
-      .then(res => {
+      .then((res) => {
         console.log(res.data);
         nav("/");
       })
-      .catch(err => console.error(err));
+      .catch((err) => console.error(err));
   };
 
   return (
