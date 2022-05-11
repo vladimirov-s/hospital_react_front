@@ -1,5 +1,4 @@
 import axios from "axios";
-import jsCookie from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import { url } from "components/helper/constants";
 import { Button } from "@mui/material";
@@ -9,17 +8,9 @@ import "./style.scss";
 const Header = ({ headText, logout }) => {
 	const nav = useNavigate();
 	const goOut = () => {
-		const accessToken = localStorage.getItem("accesToken");
-		axios
-			.post(`${url}/logout`, {
-				headers: {
-					Authorization: `Bearer ${accessToken}`,
-					withCredentials: true,
-				},
-			})
-			.then((res) => {
-				nav("/");
-			});
+		axios.post(`${url}/logout`).then((res) => {
+			nav("/");
+		});
 	};
 
 	return (
