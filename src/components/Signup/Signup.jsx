@@ -126,13 +126,13 @@ const Signup = () => {
 		const { username, password, secondPassword } = errors;
 		if (password) {
 			return setNotice(password), setOpenSnack(true);
-		} 
-    if (username) {
+		}
+		if (username) {
 			return setNotice(username), setOpenSnack(true);
-		} 
-    if (secondPassword) {
+		}
+		if (secondPassword) {
 			return setNotice(secondPassword), setOpenSnack(true);
-		} 
+		}
 		setOpenSnack(false);
 	}, [errors]);
 
