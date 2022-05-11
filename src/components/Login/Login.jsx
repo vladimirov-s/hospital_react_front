@@ -118,82 +118,82 @@ const Login = () => {
 		}
 	};
 
-	return (<>
-		<form onSubmit={onSubmit} className='auth__form'>
-			<p className='auth__form__paragraph'>Войти в систему </p>
-			<div className='auth__form__bodyForm'>
-				<label className='auth__form_loginandpassword'>
-					Логин:
-					<input
-						className={
-							(errors?.username &&
-							"auth__form__textfield wrongtextfield") ||
-							"auth__form__textfield"
-						}
-						name='username'
-						placeholder='username'
-						autoComplete='off'
-						onKeyUp={(e) =>
-							setUserField({
-								...userfield,
-								username: e.target.value,
-							})
-						}
-						onBlur={blurHandler}
-					/>
-				</label>
-				<label className='auth__form_loginandpassword'>
-					<span> Пароль:</span>
-					<input
-						className={
-							(errors?.password &&
-							"auth__form__textfield wrongtextfield") ||
-							"auth__form__textfield"
-						}
-						type={showPass}
-						name='password'
-						placeholder='password'
-						onKeyUp={(e) =>
-							setUserField({
-								...userfield,
-								password: e.target.value,
-							})
-						}
-						onBlur={blurHandler}
-					/>
-					<i
-						title={
-							showPass !== "text"
-								? "Показать пароль"
-								: "Скрыть пароль"
-						}
-						onClick={showPassfunction}
-						className='auth__form_showPassword'>
-						{showPass !== "text" ? (
-							<RemoveRedEyeIcon />
-						) : (
-							<VisibilityOffIcon />
-						)}
-					</i>
-				</label>
-			</div>
-			<div className='auth__form__botomblok'>
-				<button
-					disabled={!isValid}
-					className='auth__form__submit relative'
-				>
-					Вход
-				</button>
-				<Link to='/signup'>Зарегистрироваться</Link>
-			</div>
-			<Snack
-				open={openSnack}
-				setOpen={setOpenSnack}
-				severity='warning'
-				message={notice}
-			/>
-		</form>
-    </>
+	return (
+		<>
+			<form onSubmit={onSubmit} className='auth__form'>
+				<p className='auth__form__paragraph'>Войти в систему </p>
+				<div className='auth__form__bodyForm'>
+					<label className='auth__form_loginandpassword'>
+						Логин:
+						<input
+							className={
+								(errors?.username &&
+									"auth__form__textfield wrongtextfield") ||
+								"auth__form__textfield"
+							}
+							name='username'
+							placeholder='username'
+							autoComplete='off'
+							onKeyUp={(e) =>
+								setUserField({
+									...userfield,
+									username: e.target.value,
+								})
+							}
+							onBlur={blurHandler}
+						/>
+					</label>
+					<label className='auth__form_loginandpassword'>
+						<span> Пароль:</span>
+						<input
+							className={
+								(errors?.password &&
+									"auth__form__textfield wrongtextfield") ||
+								"auth__form__textfield"
+							}
+							type={showPass}
+							name='password'
+							placeholder='password'
+							onKeyUp={(e) =>
+								setUserField({
+									...userfield,
+									password: e.target.value,
+								})
+							}
+							onBlur={blurHandler}
+						/>
+						<i
+							title={
+								showPass !== "text"
+									? "Показать пароль"
+									: "Скрыть пароль"
+							}
+							onClick={showPassfunction}
+							className='auth__form_showPassword'>
+							{showPass !== "text" ? (
+								<RemoveRedEyeIcon />
+							) : (
+								<VisibilityOffIcon />
+							)}
+						</i>
+					</label>
+				</div>
+				<div className='auth__form__botomblok'>
+					<button
+						disabled={!isValid}
+						className='auth__form__submit relative'>
+						Вход
+					</button>
+					<Link to='/signup'>Зарегистрироваться</Link>
+				</div>
+				<Snack
+					open={openSnack}
+					setOpen={setOpenSnack}
+					severity='warning'
+					message={notice}
+				/>
+			</form>
+		</>
 	);
 };
 
