@@ -127,7 +127,7 @@ const Login = () => {
 					<input
 						className={
 							(errors?.username &&
-								"auth__form__textfield wrongtextfield") ||
+							"auth__form__textfield wrongtextfield") ||
 							"auth__form__textfield"
 						}
 						name='username'
@@ -139,7 +139,7 @@ const Login = () => {
 								username: e.target.value,
 							})
 						}
-						onBlur={(e) => blurHandler(e)}
+						onBlur={blurHandler}
 					/>
 				</label>
 				<label className='auth__form_loginandpassword'>
@@ -147,7 +147,7 @@ const Login = () => {
 					<input
 						className={
 							(errors?.password &&
-								"auth__form__textfield wrongtextfield") ||
+							"auth__form__textfield wrongtextfield") ||
 							"auth__form__textfield"
 						}
 						type={showPass}
@@ -159,7 +159,7 @@ const Login = () => {
 								password: e.target.value,
 							})
 						}
-						onBlur={(e) => blurHandler(e)}
+						onBlur={blurHandler}
 					/>
 					<i
 						title={
@@ -167,7 +167,7 @@ const Login = () => {
 								? "Показать пароль"
 								: "Скрыть пароль"
 						}
-						onClick={() => showPassfunction()}
+						onClick={showPassfunction}
 						className='auth__form_showPassword'>
 						{showPass !== "text" ? (
 							<RemoveRedEyeIcon />
@@ -180,7 +180,8 @@ const Login = () => {
 			<div className='auth__form__botomblok'>
 				<button
 					disabled={!isValid}
-					className='auth__form__submit relative'>
+					className='auth__form__submit relative'
+				>
 					Вход
 				</button>
 				<Link to='/signup'>Зарегистрироваться</Link>

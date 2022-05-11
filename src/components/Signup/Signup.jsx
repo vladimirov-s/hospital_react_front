@@ -139,103 +139,105 @@ const Signup = () => {
 	}, [errors]);
 
 	return (
-		<form className='auth__form' onSubmit={registr}>
-			<p className='auth__form__paragraph'>Регистрация</p>
-			<div className='auth__form__bodyForm'>
-				<label className='auth__form_loginandpassword'>
-					Логин:
-					<input
-						className={
-							(errors?.username &&
-								"auth__form__textfield wrongtextfield") ||
-							"auth__form__textfield"
-						}
-						type='text'
-						placeholder='username'
-						name='username'
-						autoComplete='off'
-						value={userfield.username}
-						onChange={(e) =>
-							setUserField({
-								...userfield,
-								username: e.target.value,
-							})
-						}
-						onBlur={(e) => blurHandler(e)}
-					/>
-				</label>
+		<>
+			<form className='auth__form' onSubmit={registr}>
+				<p className='auth__form__paragraph'>Регистрация</p>
+				<div className='auth__form__bodyForm'>
+					<label className='auth__form_loginandpassword'>
+						Логин:
+						<input
+							className={
+								(errors?.username &&
+									"auth__form__textfield wrongtextfield") ||
+								"auth__form__textfield"
+							}
+							type='text'
+							placeholder='username'
+							name='username'
+							autoComplete='off'
+							value={userfield.username}
+							onChange={(e) =>
+								setUserField({
+									...userfield,
+									username: e.target.value,
+								})
+							}
+							onBlur={blurHandler}
+						/>
+					</label>
 
-				<label className='auth__form_loginandpassword'>
-					<span> Пароль:</span>
-					<input
-						className={
-							(errors?.password &&
-								"auth__form__textfield wrongtextfield") ||
-							"auth__form__textfield"
-						}
-						type={showPass}
-						name='password'
-						placeholder='password'
-						value={userfield.password}
-						onChange={(e) => {
-							setUserField({
-								...userfield,
-								password: e.target.value,
-							});
-						}}
-						onBlur={(e) => blurHandler(e)}
-					/>
-					<i
-						title={
-							showPass !== "text"
-								? "Показать пароль"
-								: "Скрыть пароль"
-						}
-						onClick={() => showPassfunction()}
-						className='auth__form_showPassword'>
-						{showPass !== "text" ? (
-							<RemoveRedEyeIcon />
-						) : (
-							<VisibilityOffIcon />
-						)}
-					</i>
-				</label>
+					<label className='auth__form_loginandpassword'>
+						<span>Пароль:</span>
+						<input
+							className={
+								(errors?.password &&
+									"auth__form__textfield wrongtextfield") ||
+								"auth__form__textfield"
+							}
+							type={showPass}
+							name='password'
+							placeholder='password'
+							value={userfield.password}
+							onChange={(e) => {
+								setUserField({
+									...userfield,
+									password: e.target.value,
+								});
+							}}
+							onBlur={blurHandler}
+						/>
+						<i
+							title={
+								showPass !== "text"
+									? "Показать пароль"
+									: "Скрыть пароль"
+							}
+							onClick={() => showPassfunction()}
+							className='auth__form_showPassword'>
+							{showPass !== "text" ? (
+								<RemoveRedEyeIcon />
+							) : (
+								<VisibilityOffIcon />
+							)}
+						</i>
+					</label>
 
-				<label className='auth__form_loginandpassword flex flwrap'>
-					Повторите пароль:
-					<input
-						className={
-							(errors?.secondPassword &&
-								"auth__form__textfield wrongtextfield") ||
-							"auth__form__textfield"
-						}
-						type={showPass}
-						name='secondPassword'
-						placeholder='password'
-						value={userfield.secondPassword}
-						onChange={(e) => {
-							setUserField({
-								...userfield,
-								secondPassword: e.target.value,
-							});
-						}}
-						onBlur={(e) => blurHandler(e)}
-					/>
-				</label>
-			</div>
-			<div className='auth__form__botomblok'>
-				<button disabled={!isValid} className='auth__form__submit'>
-					Зарегистрироваться
-				</button>
-				<Link to='/'> Авторизоваться </Link>
-			</div>
-			<Snack
-				open={openSnack}
-				setOpen={setOpenSnack}
-				severity='warning'
-				message={notice}
-			/>
-		</form>
+					<label className='auth__form_loginandpassword flex flwrap'>
+						Повторите пароль:
+						<input
+							className={
+								(errors?.secondPassword &&
+									"auth__form__textfield wrongtextfield") ||
+								"auth__form__textfield"
+							}
+							type={showPass}
+							name='secondPassword'
+							placeholder='password'
+							value={userfield.secondPassword}
+							onChange={(e) => {
+								setUserField({
+									...userfield,
+									secondPassword: e.target.value,
+								});
+							}}
+							onBlur={blurHandler}
+						/>
+					</label>
+				</div>
+				<div className='auth__form__botomblok'>
+					<button disabled={!isValid} className='auth__form__submit'>
+						Зарегистрироваться
+					</button>
+					<Link to='/'>Авторизоваться</Link>
+				</div>
+				<Snack
+					open={openSnack}
+					setOpen={setOpenSnack}
+					severity='warning'
+					message={notice}
+				/>
+			</form>
+		</>
 	);
 };
 
