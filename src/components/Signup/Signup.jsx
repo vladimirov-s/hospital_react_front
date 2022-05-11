@@ -125,17 +125,15 @@ const Signup = () => {
 	useEffect(() => {
 		const { username, password, secondPassword } = errors;
 		if (password) {
-			setNotice(password);
-			setOpenSnack(true);
-		} else if (username) {
-			setNotice(username);
-			setOpenSnack(true);
-		} else if (secondPassword) {
-			setNotice(secondPassword);
-			setOpenSnack(true);
-		} else {
-			setOpenSnack(false);
-		}
+			return setNotice(password), setOpenSnack(true);
+		} 
+    if (username) {
+			return setNotice(username), setOpenSnack(true);
+		} 
+    if (secondPassword) {
+			return setNotice(secondPassword), setOpenSnack(true);
+		} 
+		setOpenSnack(false);
 	}, [errors]);
 
 	return (

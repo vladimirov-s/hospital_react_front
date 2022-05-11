@@ -53,14 +53,12 @@ const Login = () => {
 
 	useEffect(() => {
 		if (errors.password) {
-			setNotice(errors.password);
-			setOpenSnack(true);
-		} else if (errors.username) {
-			setNotice(errors.username);
-			setOpenSnack(true);
-		} else {
-			setOpenSnack(false);
+			return setNotice(errors.password), setOpenSnack(true);
 		}
+		if (errors.username) {
+			return setNotice(errors.username), setOpenSnack(true);
+		}
+		setOpenSnack(false);
 	}, [errors]);
 
 	const showPassfunction = () => {
