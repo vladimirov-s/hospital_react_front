@@ -7,10 +7,12 @@ $radius: 3px;
   align-items: center;
   box-shadow: $shadow;
   height: 117px;
+  position: relative;
+  display: flex;
 
-  h2 {
-    font-size: 32px;
-    letter-spacing: 1px;
+  .MuiButton-root {
+    position: absolute;
+    right: 40px;
   }
 
   svg {
@@ -21,6 +23,11 @@ $radius: 3px;
   }
 }
 
+.header__headtext {
+  font-size: 32px;
+  letter-spacing: 1px;
+}
+
 @media (max-width:550px) {
   .header {
     svg {
@@ -28,7 +35,7 @@ $radius: 3px;
     }
   }
 
-  .header__h2 {
+  .header__headtext {
     font-size: 28px;
     letter-spacing: 0;
   }
@@ -42,7 +49,7 @@ $radius: 3px;
     }
   }
 
-  .header__h2 {
+  .header__headtext {
     font-size: 30px;
   }
 }
