@@ -4,15 +4,12 @@ import { Link, useNavigate } from "react-router-dom";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import Snack from "components/Snack/Snack";
-import { url } from "components/helper/constants";
-import {
-  userNameValidate,
-  passwValidate,
-} from "components/helper/validate";
+import { url } from "src/helper/constants";
+import { userNameValidate, passwValidate } from "src/helper/validate";
 import "./style.scss";
 
 const Signup = () => {
-  const nav = useNavigate();
+  const navigator = useNavigate();
   const [showPass, setShowPass] = useState("password");
   const [notice, setNotice] = useState("");
   const [openSnack, setOpenSnack] = useState(false);
@@ -39,7 +36,7 @@ const Signup = () => {
         })
         .then((res) => {
           localStorage.setItem("accesToken", res.data.token.accessToken);
-          nav("/appointments");
+          navigator("/appointments");
         })
         .catch((err) => {
           setNotice("Такой юзверь уже существует.");
@@ -219,7 +216,7 @@ const Signup = () => {
           <button disabled={!isValid} className='auth__form__submit'>
             Зарегистрироваться
           </button>
-          <Link className='auth__form_link' to='/signup'>
+          <Link className='auth__form_link' to='/'>
             Авторизоваться
           </Link>
         </div>

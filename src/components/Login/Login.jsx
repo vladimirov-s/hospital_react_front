@@ -5,15 +5,15 @@ import jsCookie from "js-cookie";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import Snack from "components/Snack/Snack";
-import { url } from "components/helper/constants";
+import { url } from "src/helper/constants";
 import {
   userNameValidate,
   passwValidate,
-} from "components/helper/validate";
+} from "src/helper/validate";
 import "./style.scss";
 
 const Login = () => {
-  const nav = useNavigate();
+  const navigator = useNavigate();
   const [showPass, setShowPass] = useState("password");
   const [notice, setNotice] = useState("");
   const [openSnack, setOpenSnack] = useState(false);
@@ -39,7 +39,7 @@ const Login = () => {
         .then((res) => {
           localStorage.setItem("accesToken", res.data.token.accessToken);
           jsCookie.set("refreshToken", res.data.token.refreshToken);
-          nav("/appointments");
+          navigator("/appointments");
         })
         .catch((err) => {
           setNotice("Login or password is wrong");
@@ -99,6 +99,20 @@ const Login = () => {
     tryValidSetState();
   };
 
+  const keyUpHandler = (e, type) => {
+    if (type === "password") {
+      setUserField({
+        ...userfield,
+        password: e.target.value,
+      });
+    } else {
+      setUserField({
+        ...userfield,
+        username: e.target.value,
+      });
+    }
+  };
+
   const tryValidSetState = () => {
     const { username, password } = userfield;
     if (!errors.password && !errors.username && username && password) {
@@ -122,12 +136,7 @@ const Login = () => {
               name='username'
               placeholder='username'
               autoComplete='off'
-              onKeyUp={(e) =>
-                setUserField({
-                  ...userfield,
-                  username: e.target.value,
-                })
-              }
+              onKeyUp={(e) => keyUpHandler(e, "name")}
               onBlur={blurHandler}
             />
           </label>
@@ -142,12 +151,7 @@ const Login = () => {
               type={showPass}
               name='password'
               placeholder='password'
-              onKeyUp={(e) =>
-                setUserField({
-                  ...userfield,
-                  password: e.target.value,
-                })
-              }
+              onKeyUp={(e) => keyUpHandler(e, "password")}
               onBlur={blurHandler}
             />
             <i

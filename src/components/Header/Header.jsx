@@ -1,15 +1,15 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { url } from "components/helper/constants";
+import { url } from "src/helper/constants";
 import { Button } from "@mui/material";
-import { Hospital } from "components/pics";
+import { Hospital } from "src/pics";
 import "./style.scss";
 
 const Header = ({ headText, logout }) => {
-  const nav = useNavigate();
+  const navigator = useNavigate();
   const goOut = () => {
     axios.post(`${url}/logout`).then((res) => {
-      nav("/");
+      navigator("/");
     });
   };
 

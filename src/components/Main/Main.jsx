@@ -1,7 +1,7 @@
 import Header from "components/Header/Header";
 import Signup from "components/Signup/Signup";
 import Login from "components/Login/Login";
-import { Hospital } from "components/pics";
+import { Hospital } from "src/pics";
 import "./style.scss";
 
 const Authentication = ({ headText }) => {
