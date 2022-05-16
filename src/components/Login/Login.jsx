@@ -37,10 +37,7 @@ const Login = () => {
           password: password,
         })
         .then((res) => {
-          localStorage.setItem(
-            "accesToken",
-            res.data.token.accessToken
-          );
+          localStorage.setItem("accesToken", res.data.token.accessToken);
           jsCookie.set("refreshToken", res.data.token.refreshToken);
           nav("/appointments");
         })
@@ -62,9 +59,7 @@ const Login = () => {
   }, [errors]);
 
   const showPassfunction = () => {
-    showPass !== "text"
-      ? setShowPass("text")
-      : setShowPass("password");
+    showPass !== "text" ? setShowPass("text") : setShowPass("password");
   };
 
   const blurHandler = (e) => {
@@ -106,12 +101,7 @@ const Login = () => {
 
   const tryValidSetState = () => {
     const { username, password } = userfield;
-    if (
-      !errors.password &&
-      !errors.username &&
-      username &&
-      password
-    ) {
+    if (!errors.password && !errors.username && username && password) {
       setIsValid(true);
     }
   };
@@ -162,9 +152,7 @@ const Login = () => {
             />
             <i
               title={
-                showPass !== "text"
-                  ? "Показать пароль"
-                  : "Скрыть пароль"
+                showPass !== "text" ? "Показать пароль" : "Скрыть пароль"
               }
               onClick={showPassfunction}
               className='auth__form_showPassword'>
@@ -182,7 +170,9 @@ const Login = () => {
             className='auth__form__submit relative'>
             Вход
           </button>
-          <Link to='/signup'>Зарегистрироваться</Link>
+          <Link className='auth__form_link' to='/signup'>
+            Зарегистрироваться
+          </Link>
         </div>
         <Snack
           open={openSnack}

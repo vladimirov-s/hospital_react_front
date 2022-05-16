@@ -38,10 +38,7 @@ const Signup = () => {
           password: password,
         })
         .then((res) => {
-          localStorage.setItem(
-            "accesToken",
-            res.data.token.accessToken
-          );
+          localStorage.setItem("accesToken", res.data.token.accessToken);
           nav("/appointments");
         })
         .catch((err) => {
@@ -52,9 +49,7 @@ const Signup = () => {
   };
 
   const showPassfunction = () => {
-    showPass !== "text"
-      ? setShowPass("text")
-      : setShowPass("password");
+    showPass !== "text" ? setShowPass("text") : setShowPass("password");
   };
 
   const blurHandler = (e) => {
@@ -186,9 +181,7 @@ const Signup = () => {
             />
             <i
               title={
-                showPass !== "text"
-                  ? "Показать пароль"
-                  : "Скрыть пароль"
+                showPass !== "text" ? "Показать пароль" : "Скрыть пароль"
               }
               onClick={() => showPassfunction()}
               className='auth__form_showPassword'>
@@ -226,7 +219,9 @@ const Signup = () => {
           <button disabled={!isValid} className='auth__form__submit'>
             Зарегистрироваться
           </button>
-          <Link to='/'>Авторизоваться</Link>
+          <Link className='auth__form_link' to='/signup'>
+            Авторизоваться
+          </Link>
         </div>
         <Snack
           open={openSnack}

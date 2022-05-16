@@ -1,3 +1,49 @@
+$shadow: 0 5px 7px 0px rgba(0, 0, 0, 0.363);
+$SecondShadow: 0 0 3px 1px #33333366;
+$radius: 3px;
+
+@font-face {
+  font-family: roboto;
+  src: url(../../fonts/Roboto-Thin.ttf);
+}
+
+.auth__form__textfield,
+.auth__form__submit {
+  border-radius: $radius;
+  outline: none;
+}
+
+.auth__form_link {
+  text-decoration: none;
+  color: #222222;
+
+  &:hover {
+    text-shadow: 0 0 3px grey;
+  }
+}
+
+.auth__form__submit,
+.auth__form_link {
+  font-size: 18px;
+}
+
+.auth__form__submit {
+  padding: 10px;
+  border: 0;
+  cursor: pointer;
+
+  &:hover {
+    box-shadow: $SecondShadow;
+  }
+
+  &:disabled {
+    &:hover {
+      box-shadow: none;
+      cursor: not-allowed;
+    }
+  }
+}
+
 .auth__form {
   width: 400px;
   min-width: 320px;
