@@ -1,16 +1,15 @@
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import { url } from "src/helper/constants";
+import { observer } from "mobx-react-lite";
+import { useContext } from "react";
 import { Button } from "@mui/material";
 import { Hospital } from "src/pics";
+import { Context } from "src";
 import "./style.scss";
 
 const Header = ({ headText, logout }) => {
-  const navigator = useNavigate();
-  const goOut = () => {
-    axios.post(`${url}/logout`).then((res) => {
-      navigator("/");
-    });
+  const store = useContext(Context);
+
+  const goOut = async () => {
+    await store.logout();
   };
 
   return (
@@ -28,4 +27,4 @@ const Header = ({ headText, logout }) => {
   );
 };
 
-export default Header;
+export default observer(Header);

@@ -1,15 +1,15 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
+import { observer } from "mobx-react-lite";
+import { useEffect, useState, useContext } from "react";
+import { Link } from "react-router-dom";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import Snack from "components/Snack/Snack";
-import { url } from "src/helper/constants";
+import { Context } from "src";
 import { userNameValidate, passwValidate } from "src/helper/validate";
 import "./style.scss";
 
 const Signup = () => {
-  const navigator = useNavigate();
+  const store = useContext(Context);
   const [showPass, setShowPass] = useState("password");
   const [notice, setNotice] = useState("");
   const [openSnack, setOpenSnack] = useState(false);
@@ -29,24 +29,17 @@ const Signup = () => {
     e.preventDefault();
     if (isValid) {
       const { username, password } = userfield;
-      axios
-        .post(`${url}/registration`, {
-          name: username,
-          password: password,
-        })
-        .then((res) => {
-          localStorage.setItem("accesToken", res.data.token.accessToken);
-          navigator("/appointments");
-        })
-        .catch((err) => {
-          setNotice("Такой юзверь уже существует.");
-          setOpenSnack(true);
-        });
+      store.registration(username, password);
     }
   };
 
   const showPassfunction = () => {
     showPass !== "text" ? setShowPass("text") : setShowPass("password");
+  };
+
+  const callSnack = (text) => {
+    setNotice(text);
+    setOpenSnack(true);
   };
 
   const blurHandler = (e) => {
@@ -100,6 +93,18 @@ const Signup = () => {
     tryValidSetState();
   };
 
+  const keyUpHandler = (text, type) => {
+    if (type === "login") {
+      setUserField({ ...userfield, username: text });
+    }
+    if (type === "password") {
+      setUserField({ ...userfield, password: text });
+    }
+    if (type === "secPass") {
+      setUserField({ ...userfield, secondPassword: text });
+    }
+  };
+
   const tryValidSetState = () => {
     const { username, password, secondPassword } = userfield;
     if (
@@ -117,13 +122,13 @@ const Signup = () => {
   useEffect(() => {
     const { username, password, secondPassword } = errors;
     if (password) {
-      return setNotice(password), setOpenSnack(true);
+      return callSnack(password);
     }
     if (username) {
-      return setNotice(username), setOpenSnack(true);
+      return callSnack(username);
     }
     if (secondPassword) {
-      return setNotice(secondPassword), setOpenSnack(true);
+      return callSnack(secondPassword);
     }
     setOpenSnack(false);
   }, [errors]);
@@ -146,12 +151,7 @@ const Signup = () => {
               name='username'
               autoComplete='off'
               value={userfield.username}
-              onChange={(e) =>
-                setUserField({
-                  ...userfield,
-                  username: e.target.value,
-                })
-              }
+              onChange={(e) => keyUpHandler(e.target.value, "login")}
               onBlur={blurHandler}
             />
           </label>
@@ -168,12 +168,7 @@ const Signup = () => {
               name='password'
               placeholder='password'
               value={userfield.password}
-              onChange={(e) => {
-                setUserField({
-                  ...userfield,
-                  password: e.target.value,
-                });
-              }}
+              onChange={(e) => keyUpHandler(e.target.value, "password")}
               onBlur={blurHandler}
             />
             <i
@@ -190,7 +185,7 @@ const Signup = () => {
             </i>
           </label>
 
-          <label className='auth__form_loginandpassword flex flwrap'>
+          <label className='auth__form_loginandpassword'>
             Повторите пароль:
             <input
               className={
@@ -202,12 +197,7 @@ const Signup = () => {
               name='secondPassword'
               placeholder='password'
               value={userfield.secondPassword}
-              onChange={(e) => {
-                setUserField({
-                  ...userfield,
-                  secondPassword: e.target.value,
-                });
-              }}
+              onChange={(e) => keyUpHandler(e.target.value, "secPass")}
               onBlur={blurHandler}
             />
           </label>
@@ -231,4 +221,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default observer(Signup);

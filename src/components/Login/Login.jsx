@@ -1,21 +1,17 @@
-import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
-import jsCookie from "js-cookie";
+import { observer } from "mobx-react-lite";
+import { useState, useEffect, useContext } from "react";
+import { Link } from "react-router-dom";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import Snack from "components/Snack/Snack";
-import { url } from "src/helper/constants";
-import {
-  userNameValidate,
-  passwValidate,
-} from "src/helper/validate";
+import { Context } from "src";
+import { userNameValidate, passwValidate } from "src/helper/validate";
 import "./style.scss";
 
 const Login = () => {
-  const navigator = useNavigate();
   const [showPass, setShowPass] = useState("password");
   const [notice, setNotice] = useState("");
+  const store = useContext(Context);
   const [openSnack, setOpenSnack] = useState(false);
   const [userfield, setUserField] = useState({
     username: "",
@@ -31,32 +27,25 @@ const Login = () => {
     e.preventDefault();
     if (isValid) {
       const { username, password } = userfield;
-      axios
-        .post(`${url}/login`, {
-          name: username,
-          password: password,
-        })
-        .then((res) => {
-          localStorage.setItem("accesToken", res.data.token.accessToken);
-          jsCookie.set("refreshToken", res.data.token.refreshToken);
-          navigator("/appointments");
-        })
-        .catch((err) => {
-          setNotice("Login or password is wrong");
-          setOpenSnack(true);
-        });
+      store.login(username, password);
     }
   };
 
   useEffect(() => {
-    if (errors.password) {
-      return setNotice(errors.password), setOpenSnack(true);
+    const { username, password } = errors;
+    if (password) {
+      return callSnack(password);
     }
-    if (errors.username) {
-      return setNotice(errors.username), setOpenSnack(true);
+    if (username) {
+      return callSnack(username);
     }
     setOpenSnack(false);
   }, [errors]);
+
+  const callSnack = (text) => {
+    setNotice(text);
+    setOpenSnack(true);
+  };
 
   const showPassfunction = () => {
     showPass !== "text" ? setShowPass("text") : setShowPass("password");
@@ -99,16 +88,16 @@ const Login = () => {
     tryValidSetState();
   };
 
-  const keyUpHandler = (e, type) => {
+  const keyUpHandler = (text, type) => {
     if (type === "password") {
       setUserField({
         ...userfield,
-        password: e.target.value,
+        password: text,
       });
     } else {
       setUserField({
         ...userfield,
-        username: e.target.value,
+        username: text,
       });
     }
   };
@@ -136,7 +125,7 @@ const Login = () => {
               name='username'
               placeholder='username'
               autoComplete='off'
-              onKeyUp={(e) => keyUpHandler(e, "name")}
+              onKeyUp={(e) => keyUpHandler(e.target.value, "name")}
               onBlur={blurHandler}
             />
           </label>
@@ -151,7 +140,7 @@ const Login = () => {
               type={showPass}
               name='password'
               placeholder='password'
-              onKeyUp={(e) => keyUpHandler(e, "password")}
+              onKeyUp={(e) => keyUpHandler(e.target.value, "password")}
               onBlur={blurHandler}
             />
             <i
@@ -189,4 +178,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default observer(Login);
