@@ -31,7 +31,7 @@ export default class Store {
       this.setAuth(false);
       this.setUser({});
     } catch (e) {
-      return false;
+      return e;
     }
   }
 
@@ -42,7 +42,9 @@ export default class Store {
       this.setAuth(true);
       this.setUser(response.data.user);
     } catch (e) {
-      return false;
+      this.setGlobalNotice("Проверьте правильность введеных данных");
+      this.setSnackState(true);
+      return e;
     }
   }
 
@@ -53,7 +55,7 @@ export default class Store {
       this.setAuth(true);
       this.setUser(response.data.user);
     } catch (e) {
-      return false;
+      return e;
     }
   }
 
@@ -68,9 +70,10 @@ export default class Store {
       this.setAuth(true);
       this.setUser(response.data.user);
     } catch (e) {
-      return false;
+      return e;
     } finally {
       this.setIsLoading(false);
     }
   }
 }
+

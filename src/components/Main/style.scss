@@ -2,26 +2,23 @@
   justify-content: space-around;
   padding: 42px 0;
   display: flex;
+}
 
-  >svg {
-    height: 376px;
-    align-self: center;
-    margin-left: 60px;
-  }
+.bodyLogo {
+  height: 376px;
+  align-self: center;
+  margin-left: 60px;
 }
 
 @media (max-width:550px) {
-  .main__wrap {
-    svg {
-      display: none;
-    }
+  .bodyLogo {
+    display: none;
   }
+
 }
 
 @media (max-width:800px) {
-  .main__wrap {
-    svg {
-      margin-left: 0;
-    }
+  .bodyLogo {
+    margin-left: 0;
   }
 }

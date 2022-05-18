@@ -11,14 +11,14 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-const refresh = async () => {
+const refresh = async (next) => {
   try {
     const response = await axios.get(`${url_server}/refresh`, {
       withCredentials: true,
     });
     localStorage.setItem("accesToken", response.data.accessToken);
   } catch (e) {
-    return false;
+    next(e);
   }
 };
 
@@ -31,7 +31,7 @@ api.interceptors.response.use(
 
     if (
       error.response.status === 401 &&
-      error.config &&
+      originalRequest &&
       !originalRequest._isRetry
     ) {
       originalRequest._isRetry = true;

@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import Snack from "components/Snack/Snack";
-import { Context } from "src";
+import { Context } from "src/index";
 import { userNameValidate, passwValidate } from "src/helper/validate";
 import "./style.scss";
 
@@ -34,10 +34,12 @@ const Login = () => {
   useEffect(() => {
     const { username, password } = errors;
     if (password) {
-      return callSnack(password);
+      callSnack(password);
+      return;
     }
     if (username) {
-      return callSnack(username);
+      callSnack(username);
+      return;
     }
     setOpenSnack(false);
   }, [errors]);
@@ -51,37 +53,33 @@ const Login = () => {
     showPass !== "text" ? setShowPass("text") : setShowPass("password");
   };
 
+  const errorHandler = (msg, errName) => {
+    setErrors({ ...errors, [errName]: msg });
+  };
+
   const blurHandler = (e) => {
     const candidate = e.target.name;
     const { username, password } = userfield;
 
     if (candidate === "username") {
       if (userNameValidate(username)) {
-        setErrors({
-          ...errors,
-          username: "",
-        });
+        errorHandler("", "username");
       } else {
-        setErrors({
-          ...errors,
-          username:
-            "Поле Login должно быть от 6 символов, разрешены только латинские буквы",
-        });
+        errorHandler(
+          "Поле Login должно быть от 6 символов, разрешены только латинские буквы",
+          "username"
+        );
         setIsValid(false);
       }
     }
     if (candidate === "password") {
       if (passwValidate(password)) {
-        setErrors({
-          ...errors,
-          password: "",
-        });
+        errorHandler("", "password");
       } else {
-        setErrors({
-          ...errors,
-          password:
-            "Пароль должен быть от 6 до 12 символов латинские буквы и цифры",
-        });
+        errorHandler(
+          "Пароль должен быть от 6 до 12 символов латинские буквы и цифры",
+          "password"
+        );
         setIsValid(false);
       }
     }
@@ -89,17 +87,7 @@ const Login = () => {
   };
 
   const keyUpHandler = (text, type) => {
-    if (type === "password") {
-      setUserField({
-        ...userfield,
-        password: text,
-      });
-    } else {
-      setUserField({
-        ...userfield,
-        username: text,
-      });
-    }
+    setUserField({ ...userfield, [type]: text });
   };
 
   const tryValidSetState = () => {
@@ -118,14 +106,13 @@ const Login = () => {
             Логин:
             <input
               className={
-                (errors?.username &&
-                  "auth__form__textfield wrongtextfield") ||
+                (errors?.username && "auth__form__textfield wrongtextfield") ||
                 "auth__form__textfield"
               }
               name='username'
               placeholder='username'
               autoComplete='off'
-              onKeyUp={(e) => keyUpHandler(e.target.value, "name")}
+              onKeyUp={(e) => keyUpHandler(e.target.value, "username")}
               onBlur={blurHandler}
             />
           </label>
@@ -133,8 +120,7 @@ const Login = () => {
             <span> Пароль:</span>
             <input
               className={
-                (errors?.password &&
-                  "auth__form__textfield wrongtextfield") ||
+                (errors?.password && "auth__form__textfield wrongtextfield") ||
                 "auth__form__textfield"
               }
               type={showPass}
@@ -144,9 +130,7 @@ const Login = () => {
               onBlur={blurHandler}
             />
             <i
-              title={
-                showPass !== "text" ? "Показать пароль" : "Скрыть пароль"
-              }
+              title={showPass !== "text" ? "Показать пароль" : "Скрыть пароль"}
               onClick={showPassfunction}
               className='auth__form_showPassword'>
               {showPass !== "text" ? (
@@ -158,9 +142,7 @@ const Login = () => {
           </label>
         </div>
         <div className='auth__form__botomblok'>
-          <button
-            disabled={!isValid}
-            className='auth__form__submit relative'>
+          <button disabled={!isValid} className='auth__form__submit relative'>
             Вход
           </button>
           <Link className='auth__form_link' to='/signup'>

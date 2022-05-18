@@ -9,7 +9,9 @@ const Authentication = ({ headText }) => {
     <div className='main'>
       <Header headText={headText} />
       <div className='main__wrap'>
-        <Hospital need='secLogo' />
+        <i className='bodyLogo'>
+          <Hospital need='bodyLogo' />
+        </i>
         {headText !== "Войти в систему" ? <Signup /> : <Login />}
       </div>
     </div>
