@@ -1,5 +1,6 @@
 import { makeAutoObservable } from "mobx";
 import axios from "axios";
+import AppointService from "../services/AppointService";
 import AuthService from "../services/Authservise";
 import { url_server } from "../helper/constants";
 
@@ -7,7 +8,7 @@ export default class Store {
   user = {};
   isAuth = false;
   isLoading = false;
-
+  allAppointments = [];
   constructor() {
     makeAutoObservable(this);
   }
@@ -19,7 +20,9 @@ export default class Store {
   setAuth(bool) {
     this.isAuth = bool;
   }
-
+  setAllAppointments(collection) {
+    this.allAppointments = collection;
+  }
   setUser(user) {
     this.user = user;
   }
@@ -35,6 +38,18 @@ export default class Store {
     }
   }
 
+  refresh = async (next) => {
+    try {
+      console.log("зашло в стор и в рефреш");
+      const response = await axios.get(`${url_server}/refresh`, {
+        withCredentials: true,
+      });
+      localStorage.setItem("accesToken", response.data.accessToken);
+    } catch (e) {
+      next(e);
+    }
+  };
+
   async login(name, password) {
     try {
       const response = await AuthService.login(name, password);
@@ -42,9 +57,7 @@ export default class Store {
       this.setAuth(true);
       this.setUser(response.data.user);
     } catch (e) {
-      this.setGlobalNotice("Проверьте правильность введеных данных");
-      this.setSnackState(true);
-      return e;
+      alert("Проверьте правильность введеных данных");
     }
   }
 
@@ -73,6 +86,17 @@ export default class Store {
       return e;
     } finally {
       this.setIsLoading(false);
+    }
+  }
+
+  async getAppointments() {
+    try {
+      // const response = await AppointService.getAppointments();
+      // this.setAllAppointments(response.data.data);
+      this.setAllAppointments([2, 3, 42, 3, 234, 23, 3234]);
+    } catch (e) {
+      console.error(e);
+      // alert("Ошибка " + e.name + ":" + e.message);
     }
   }
 }

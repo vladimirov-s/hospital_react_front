@@ -1,5 +1,6 @@
 import axios from "axios";
-import { url_server } from "../helper/constants";
+import { url_server } from "src/helper/constants";
+import Store from "src/store/store";
 
 const api = axios.create({
   withCredentials: true,
@@ -10,17 +11,6 @@ api.interceptors.request.use((config) => {
   config.headers.Authorization = `${localStorage.getItem("accesToken")}`;
   return config;
 });
-
-const refresh = async (next) => {
-  try {
-    const response = await axios.get(`${url_server}/refresh`, {
-      withCredentials: true,
-    });
-    localStorage.setItem("accesToken", response.data.accessToken);
-  } catch (e) {
-    next(e);
-  }
-};
 
 api.interceptors.response.use(
   (config) => {
@@ -35,7 +25,7 @@ api.interceptors.response.use(
       !originalRequest._isRetry
     ) {
       originalRequest._isRetry = true;
-      await refresh();
+      await Store.refresh();
       return api.request(originalRequest);
     } else {
       throw error;

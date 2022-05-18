@@ -7,6 +7,8 @@ import Appointments from "components/Appointments/Appointments";
 import "./App.scss";
 
 const App = () => {
+  // mobx используется для хранения и обработки состояний в контексте
+
   const store = useContext(Context);
 
   useEffect(() => {
@@ -26,9 +28,6 @@ const App = () => {
   if (store.isAuth) {
     return (
       <div className='App'>
-        <span>
-          mobx используется для хранения и обработки состояний в контексте
-        </span>
         <Routes>
           <Route path='/appointments' element={<Appointments />} />
           <Route path='/*' element={<Navigate to='/appointments' />} />
@@ -40,9 +39,6 @@ const App = () => {
   if (!store.isAuth) {
     return (
       <div className='App'>
-        <span>
-          mobx используется для хранения и обработки состояний в контексте
-        </span>
         <Routes>
           <Route path='/*' element={<Navigate to='/' />} />
           <Route path='/' element={<Main headText='Войти в систему' />} />

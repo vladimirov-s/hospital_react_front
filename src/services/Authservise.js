@@ -1,4 +1,4 @@
-import api from "../http";
+import api from "src/http/index";
 
 export default class AuthService {
   static async login(username, password) {
@@ -6,7 +6,7 @@ export default class AuthService {
   }
 
   static async registration(username, password) {
-    return api.post("/registration", { name: username, password:password });
+    return api.post("/registration", { name: username, password: password });
   }
 
   static async logout() {
