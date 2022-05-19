@@ -1,8 +1,8 @@
+import { Context } from "src/index";
 import { observer } from "mobx-react-lite";
 import { useContext } from "react";
 import { Button } from "@mui/material";
 import { Hospital } from "src/pics";
-import { Context } from "src";
 import "./style.scss";
 
 const Header = ({ headText, logout }) => {

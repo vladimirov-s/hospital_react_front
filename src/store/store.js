@@ -37,7 +37,6 @@ export default class Store {
 
   refresh = async (next) => {
     try {
-      console.log("зашло в стор и в рефреш");
       const response = await axios.get(`${url_server}/refresh`, {
         withCredentials: true,
       });
@@ -50,7 +49,7 @@ export default class Store {
   async login(name, password) {
     try {
       const response = await AuthService.login(name, password);
-      localStorage.setItem("accessToken", response.data.token.accessToken); //
+      localStorage.setItem("accessToken", response.data.token.accessToken);
       this.setAuth(true);
       this.setUser(response.data.user);
     } catch (e) {
