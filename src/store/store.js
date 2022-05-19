@@ -8,7 +8,6 @@ export default class Store {
   user = {};
   isAuth = false;
   isLoading = false;
-  allAppointments = [];
   constructor() {
     makeAutoObservable(this);
   }
@@ -20,9 +19,7 @@ export default class Store {
   setAuth(bool) {
     this.isAuth = bool;
   }
-  setAllAppointments(collection) {
-    this.allAppointments = collection;
-  }
+
   setUser(user) {
     this.user = user;
   }
@@ -88,16 +85,4 @@ export default class Store {
       this.setIsLoading(false);
     }
   }
-
-  async getAppointments() {
-    try {
-      // const response = await AppointService.getAppointments();
-      // this.setAllAppointments(response.data.data);
-      this.setAllAppointments([2, 3, 42, 3, 234, 23, 3234]);
-    } catch (e) {
-      console.error(e);
-      // alert("Ошибка " + e.name + ":" + e.message);
-    }
-  }
 }
-
