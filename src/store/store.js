@@ -1,6 +1,6 @@
 import { makeAutoObservable } from "mobx";
 import axios from "axios";
-import AppointService from "../services/AppointService";
+// import AppointService from "../services/AppointService";
 import AuthService from "../services/Authservise";
 import { url_server } from "../helper/constants";
 
@@ -37,10 +37,9 @@ export default class Store {
 
   refresh = async (next) => {
     try {
-      const response = await axios.get(`${url_server}/refresh`, {
+      await axios.get(`${url_server}/refresh`, {
         withCredentials: true,
       });
-      localStorage.setItem("accesToken", response.data.accessToken);
     } catch (e) {
       next(e);
     }
