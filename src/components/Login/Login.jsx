@@ -9,11 +9,11 @@ import { userNameValidate, passwValidate } from "src/helper/validate";
 import "./style.scss";
 
 const Login = () => {
+  const store = useContext(Context);
   const [showPass, setShowPass] = useState("password");
   const [notice, setNotice] = useState("");
-  const store = useContext(Context);
   const [openSnack, setOpenSnack] = useState(false);
-  const [userfield, setUserField] = useState({
+  const [userField, setUserField] = useState({
     username: "",
     password: "",
   });
@@ -23,11 +23,11 @@ const Login = () => {
     password: "",
   });
 
-  const register = (e) => {
+  const register = async (e) => {
     e.preventDefault();
     if (isValid) {
-      const { username, password } = userfield;
-      store.login(username, password);
+      const { username, password } = userField;
+      await store.login(username, password);
     }
   };
 
@@ -41,12 +41,12 @@ const Login = () => {
       callSnack(username);
       return;
     }
-    setOpenSnack(false);
+    store.setOpenSnack(false);
   }, [errors]);
 
   const callSnack = (text) => {
-    setNotice(text);
-    setOpenSnack(true);
+    store.setMessage(text);
+    store.setOpenSnack(true);
   };
 
   const showPassfunction = () => {
@@ -59,7 +59,7 @@ const Login = () => {
 
   const blurHandler = (e) => {
     const candidate = e.target.name;
-    const { username, password } = userfield;
+    const { username, password } = userField;
 
     if (candidate === "username") {
       if (userNameValidate(username)) {
@@ -87,11 +87,11 @@ const Login = () => {
   };
 
   const keyUpHandler = (text, type) => {
-    setUserField({ ...userfield, [type]: text });
+    setUserField({ ...userField, [type]: text });
   };
 
   const tryValidSetState = () => {
-    const { username, password } = userfield;
+    const { username, password } = userField;
     if (!errors.password && !errors.username && username && password) {
       setIsValid(true);
     }
@@ -149,12 +149,7 @@ const Login = () => {
             Зарегистрироваться
           </Link>
         </div>
-        <Snack
-          open={openSnack}
-          setOpen={setOpenSnack}
-          severity='warning'
-          message={notice}
-        />
+        <Snack />
       </form>
     </div>
   );

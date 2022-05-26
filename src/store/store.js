@@ -1,15 +1,24 @@
 import { makeAutoObservable } from "mobx";
 import axios from "axios";
-// import AppointService from "../services/AppointService";
-import AuthService from "../services/Authservise";
-import { url_server } from "../helper/constants";
+import AuthService from "src/services/Authservise";
+import { url_server } from "src/helper/constants";
 
 export default class Store {
   user = {};
   isAuth = false;
+  message = "";
+  openSnack = false;
   isLoading = false;
   constructor() {
     makeAutoObservable(this);
+  }
+
+  setMessage(string) {
+    this.message = string;
+  }
+
+  setOpenSnack(bool) {
+    this.openSnack = bool;
   }
 
   setIsLoading(bool) {
@@ -48,21 +57,34 @@ export default class Store {
   async login(name, password) {
     try {
       const response = await AuthService.login(name, password);
-      localStorage.setItem("accessToken", response.data.token.accessToken);
       this.setAuth(true);
       this.setUser(response.data.user);
     } catch (e) {
-      alert("Проверьте правильность введеных данных");
+      if (e.code === "ERR_NETWORK") {
+        this.setOpenSnack(true);
+        this.setMessage("Сервер недоступен");
+      }
+      if (e.response.status === 400) {
+        this.setOpenSnack(true);
+        this.setMessage("Проверьте правильность введеных данных");
+      }
     }
   }
 
   async registration(username, password) {
     try {
       const response = await AuthService.registration(username, password);
-      localStorage.setItem("accessToken", response.data.token.accessToken);
       this.setAuth(true);
       this.setUser(response.data.user);
     } catch (e) {
+      if (e.code === "ERR_NETWORK") {
+        this.setOpenSnack(true);
+        this.setMessage("Сервер недоступен");
+      }
+      if (e.response.status === 409) {
+        this.setOpenSnack(true);
+        this.setMessage("Такой юзернэйм уже существует");
+      }
       return e;
     }
   }
@@ -70,13 +92,9 @@ export default class Store {
   async checkAuth() {
     this.setIsLoading(true);
     try {
-      const response = await axios.get(`${url_server}/refresh`, {
-        withCredentials: true,
-      });
-
-      localStorage.setItem("accessToken", response.data.accessToken);
+      const response = await AuthService.refresh();
       this.setAuth(true);
-      this.setUser(response.data.user);
+      this.setUser(response.data);
     } catch (e) {
       return e;
     } finally {

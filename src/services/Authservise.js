@@ -6,10 +6,17 @@ export default class AuthService {
   }
 
   static async registration(username, password) {
-    return api.post("auth/registration", { name: username, password: password });
+    return api.post("auth/registration", {
+      name: username,
+      password: password,
+    });
   }
 
   static async logout() {
-    return api.post("/logout");
+    return api.post("auth/logout");
+  }
+
+  static async refresh() {
+    return api.get("auth/refresh");
   }
 }

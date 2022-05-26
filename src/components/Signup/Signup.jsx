@@ -11,8 +11,6 @@ import "./style.scss";
 const Signup = () => {
   const store = useContext(Context);
   const [showPass, setShowPass] = useState("password");
-  const [notice, setNotice] = useState("");
-  const [openSnack, setOpenSnack] = useState(false);
   const [userfield, setUserField] = useState({
     username: "",
     password: "",
@@ -38,8 +36,8 @@ const Signup = () => {
   };
 
   const callSnack = (text) => {
-    setNotice(text);
-    setOpenSnack(true);
+    store.setMessage(text);
+    store.setOpenSnack(true);
   };
 
   const errorHandler = (msg, errName) => {
@@ -122,7 +120,7 @@ const Signup = () => {
       callSnack(secondPassword);
       return;
     }
-    setOpenSnack(false);
+    store.setOpenSnack(false);
   }, [errors]);
 
   return (
@@ -198,12 +196,7 @@ const Signup = () => {
             Авторизоваться
           </Link>
         </div>
-        <Snack
-          open={openSnack}
-          setOpen={setOpenSnack}
-          severity='warning'
-          message={notice}
-        />
+        <Snack />
       </form>
     </div>
   );

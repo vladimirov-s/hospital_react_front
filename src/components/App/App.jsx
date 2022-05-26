@@ -1,10 +1,10 @@
 import { useContext, useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
-import { Context } from "./index";
+import { Context } from "../../index";
 import { observer } from "mobx-react-lite";
 import Main from "components/Main/Main";
 import Appointments from "components/Appointments/Appointments";
-import "./App.scss";
+import "./style.scss";
 
 const App = () => {
   // mobx используется для хранения и обработки состояний в контексте
