@@ -30,26 +30,24 @@ const App = () => {
       <div className='App'>
         <Routes>
           <Route path='/appointments' element={<Appointments />} />
-          <Route path='/*' element={<Navigate to='/appointments' />} />
+          <Route path='*' element={<Navigate to='/appointments' />} />
         </Routes>
       </div>
     );
   }
 
-  if (!store.isAuth) {
-    return (
-      <div className='App'>
-        <Routes>
-          <Route path='/*' element={<Navigate to='/' />} />
-          <Route path='/' element={<Main headText='Войти в систему' />} />
-          <Route
-            path='/signup'
-            element={<Main headText='Зарегистрироваться в системе' />}
-          />
-        </Routes>
-      </div>
-    );
-  }
+  return (
+    <div className='App'>
+      <Routes>
+        <Route path='*' element={<Navigate to='/' />} />
+        <Route path='/' element={<Main headText='Войти в систему' />} />
+        <Route
+          path='/signup'
+          element={<Main headText='Зарегистрироваться в системе' />}
+        />
+      </Routes>
+    </div>
+  );
 };
 
 export default observer(App);

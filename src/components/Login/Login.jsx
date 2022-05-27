@@ -1,18 +1,15 @@
-import { Context } from "src/index";
 import { observer } from "mobx-react-lite";
 import { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import Snack from "components/Snack/Snack";
+import { Context } from "src/index";
 import { userNameValidate, passwValidate } from "src/helper/validate";
 import "./style.scss";
 
 const Login = () => {
   const store = useContext(Context);
   const [showPass, setShowPass] = useState("password");
-  const [notice, setNotice] = useState("");
-  const [openSnack, setOpenSnack] = useState(false);
   const [userField, setUserField] = useState({
     username: "",
     password: "",
@@ -149,7 +146,6 @@ const Login = () => {
             Зарегистрироваться
           </Link>
         </div>
-        <Snack />
       </form>
     </div>
   );

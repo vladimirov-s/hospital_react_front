@@ -1,10 +1,9 @@
-import { Context } from "src/index";
 import { observer } from "mobx-react-lite";
 import { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import Snack from "components/Snack/Snack";
+import { Context } from "src/index";
 import { userNameValidate, passwValidate } from "src/helper/validate";
 import "./style.scss";
 
@@ -196,7 +195,6 @@ const Signup = () => {
             Авторизоваться
           </Link>
         </div>
-        <Snack />
       </form>
     </div>
   );

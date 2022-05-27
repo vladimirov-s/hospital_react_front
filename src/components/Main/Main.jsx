@@ -1,3 +1,4 @@
+import Snack from "components/Snack/Snack";
 import Header from "components/Header/Header";
 import Signup from "components/Signup/Signup";
 import Login from "components/Login/Login";
@@ -14,6 +15,7 @@ const Authentication = ({ headText }) => {
         </i>
         {headText !== "Войти в систему" ? <Signup /> : <Login />}
       </div>
+      <Snack />
     </div>
   );
 };
