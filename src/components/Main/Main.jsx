@@ -1,7 +1,7 @@
-import Snack from "components/Snack/Snack";
 import Header from "components/Header/Header";
 import Signup from "components/Signup/Signup";
 import Login from "components/Login/Login";
+import Snack from "components/Snack/Snack";
 import { Hospital } from "src/imgs/pics";
 import "./style.scss";
 

@@ -1,10 +1,10 @@
-const regForusername = /^[a-zA-Z]{6,20}$/;
+const regForUsername = /^[a-zA-Z]{6,20}$/;
 const regForPassword = /^[a-zA-Z0-9]{6,18}$/;
 
 export const userNameValidate = (str) => {
-  return regForusername.test(String(str));
+  return regForUsername.test(String(str));
 };
 
-export const passwValidate = (str) => {
+export const passwordValidate = (str) => {
   return regForPassword.test(String(str));
 };

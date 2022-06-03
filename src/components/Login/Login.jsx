@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { Context } from "src/index";
-import { userNameValidate, passwValidate } from "src/helper/validate";
+import { userNameValidate, passwordValidate } from "src/helper/validate";
 import "./style.scss";
 
 const Login = () => {
@@ -70,7 +70,7 @@ const Login = () => {
       }
     }
     if (candidate === "password") {
-      if (passwValidate(password)) {
+      if (passwordValidate(password)) {
         errorHandler("", "password");
       } else {
         errorHandler(

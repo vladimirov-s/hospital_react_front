@@ -17,16 +17,16 @@ export default class Store {
     this.message = string;
   }
 
-  setOpenSnack(bool) {
-    this.openSnack = bool;
+  setOpenSnack(boolean) {
+    this.openSnack = boolean;
   }
 
-  setIsLoading(bool) {
-    this.isLoading = bool;
+  setIsLoading(boolean) {
+    this.isLoading = boolean;
   }
 
-  setAuth(bool) {
-    this.isAuth = bool;
+  setAuth(boolean) {
+    this.isAuth = boolean;
   }
 
   setUser(user) {
