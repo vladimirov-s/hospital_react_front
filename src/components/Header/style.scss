@@ -14,13 +14,13 @@ $radius: 3px;
     position: absolute;
     right: 40px;
   }
+}
 
-  svg {
-    height: 90px;
-    width: 98px;
-    margin: 0 80px 0 30px;
-    overflow-x: overlay;
-  }
+.headlogo {
+  height: 90px;
+  width: 98px;
+  margin: 0 80px 0 30px;
+  overflow-x: overlay;
 }
 
 .header_navLink {
@@ -56,7 +56,7 @@ $radius: 3px;
 
 @media (max-width:800px) {
   .header {
-    svg {
+    .headlogo {
       margin: 0;
       transform: scale(.85);
     }

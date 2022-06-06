@@ -1,8 +1,8 @@
 import { useContext, useEffect } from "react";
 import { observer } from "mobx-react-lite";
 import { Routes, Route, Navigate } from "react-router-dom";
-import Main from "components/Main/Main";
 import { Context } from "src/index";
+import Main from "components/Main/Main";
 import Appointments from "components/Appointments/Appointments";
 import "./style.scss";
 
@@ -27,11 +27,6 @@ const App = () => {
       <div className='App'>
         <Routes>
           <Route path='/appointments' element={<Appointments />} />
-          <Route
-            path='/signup'
-            element={<Main headText='Зарегистрироваться в системе' />}
-          />
-          <Route path='/login' element={<Main headText='Войти в систему' />} />
           <Route path='*' element={<Navigate to='/appointments' />} />
         </Routes>
       </div>
