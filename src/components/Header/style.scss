@@ -14,31 +14,31 @@ $radius: 3px;
     position: absolute;
     right: 40px;
   }
-}
 
-.headlogo {
-  height: 90px;
-  width: 98px;
-  margin: 0 80px 0 30px;
-  overflow-x: overlay;
-}
-
-.header_navLink {
-  text-decoration: none;
-  position: absolute;
-  top: 0;
-  right: 0;
-  font-weight: 800;
-  color: #000;
-
-  &:hover {
-    text-shadow: 0 0 2px red;
+  .headlogo {
+    height: 90px;
+    width: 98px;
+    margin: 0 80px 0 30px;
+    overflow-x: overlay;
   }
-}
 
-.header__headtext {
-  font-size: 32px;
-  letter-spacing: 1px;
+  .header_navLink {
+    text-decoration: none;
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-weight: 800;
+    color: #000;
+
+    &:hover {
+      text-shadow: 0 0 2px red;
+    }
+  }
+
+  .header__headtext {
+    font-size: 32px;
+    letter-spacing: 1px;
+  }
 }
 
 @media (max-width:550px) {

@@ -16,26 +16,26 @@ const Login = () => {
   });
   const [isValid, setIsValid] = useState(false);
   const [errors, setErrors] = useState({
-    username: "",
-    password: "",
+    errUsername: "",
+    errPassword: "",
   });
+  const { errUsername, errPassword } = errors;
+  const { username, password } = userField;
 
   const register = async (e) => {
     e.preventDefault();
     if (isValid) {
-      const { username, password } = userField;
       await store.login(username, password);
     }
   };
 
   useEffect(() => {
-    const { username, password } = errors;
-    if (password) {
-      callSnack(password);
+    if (errPassword) {
+      callSnack(errPassword);
       return;
     }
-    if (username) {
-      callSnack(username);
+    if (errUsername) {
+      callSnack(errUsername);
       return;
     }
     store.setOpenSnack(false);
@@ -46,7 +46,7 @@ const Login = () => {
     store.setOpenSnack(true);
   };
 
-  const showPassfunction = () => {
+  const showPassJobber = () => {
     showPass !== "text" ? setShowPass("text") : setShowPass("password");
   };
 
@@ -56,30 +56,31 @@ const Login = () => {
 
   const blurHandler = (e) => {
     const candidate = e.target.name;
-    const { username, password } = userField;
 
     if (candidate === "username") {
       if (userNameValidate(username)) {
-        errorHandler("", "username");
+        errorHandler("", "errUsername");
       } else {
         errorHandler(
           "Поле Login должно быть от 6 символов, разрешены только латинские буквы",
-          "username"
+          "errUsername"
         );
         setIsValid(false);
       }
     }
+
     if (candidate === "password") {
       if (passwordValidate(password)) {
-        errorHandler("", "password");
+        errorHandler("", "errPassword");
       } else {
         errorHandler(
           "Пароль должен быть от 6 до 12 символов латинские буквы и цифры",
-          "password"
+          "errPassword"
         );
         setIsValid(false);
       }
     }
+
     tryValidSetState();
   };
 
@@ -88,7 +89,6 @@ const Login = () => {
   };
 
   const tryValidSetState = () => {
-    const { username, password } = userField;
     if (!errors.password && !errors.username && username && password) {
       setIsValid(true);
     }
@@ -103,7 +103,7 @@ const Login = () => {
             Логин:
             <input
               className={
-                (errors?.username && "auth__form__textfield wrongtextfield") ||
+                (errUsername && "auth__form__textfield wrongtextfield") ||
                 "auth__form__textfield"
               }
               name='username'
@@ -117,7 +117,7 @@ const Login = () => {
             <span> Пароль:</span>
             <input
               className={
-                (errors?.password && "auth__form__textfield wrongtextfield") ||
+                (errPassword && "auth__form__textfield wrongtextfield") ||
                 "auth__form__textfield"
               }
               type={showPass}
@@ -128,7 +128,7 @@ const Login = () => {
             />
             <i
               title={showPass !== "text" ? "Показать пароль" : "Скрыть пароль"}
-              onClick={showPassfunction}
+              onClick={showPassJobber}
               className='auth__form_showPassword'>
               {showPass !== "text" ? (
                 <RemoveRedEyeIcon />

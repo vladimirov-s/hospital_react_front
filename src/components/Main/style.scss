@@ -1,13 +1,15 @@
-.main__wrap {
-  justify-content: space-around;
-  padding: 42px 0;
-  display: flex;
-}
+.main {
+  .main__wrap {
+    justify-content: space-around;
+    padding: 42px 0;
+    display: flex;
+  }
 
-.bodyLogo {
-  height: 376px;
-  align-self: center;
-  margin-left: 60px;
+  .bodyLogo {
+    height: 376px;
+    align-self: center;
+    margin-left: 60px;
+  }
 }
 
 @media (max-width:550px) {

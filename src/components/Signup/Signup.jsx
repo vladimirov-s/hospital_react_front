@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { Context } from "src/index";
-import { userNameValidate, passwordValidate } from "src/helper/validate.ts";
+import { userNameValidate, passwordValidate } from "src/helper/validate";
 import "./style.scss";
 
 const Signup = () => {
@@ -88,7 +88,6 @@ const Signup = () => {
       errorHandler("Введённые пароли должны совпадать", "errSecondPassword");
     }
 
-    console.log("errors", errors);
     tryValidSetState();
   };
 
@@ -136,8 +135,7 @@ const Signup = () => {
             Логин:
             <input
               className={
-                (errors?.errUsername &&
-                  "auth__form__textfield wrongtextfield") ||
+                (errUsername && "auth__form__textfield wrongtextfield") ||
                 "auth__form__textfield"
               }
               type='text'
@@ -154,14 +152,13 @@ const Signup = () => {
             <span>Пароль:</span>
             <input
               className={
-                (errors?.errPassword &&
-                  "auth__form__textfield wrongtextfield") ||
+                (errPassword && "auth__form__textfield wrongtextfield") ||
                 "auth__form__textfield"
               }
               type={showPass}
               name='password'
               placeholder='password'
-              value={userfield.password}
+              value={password}
               onChange={(e) => keyUpHandler(e.target.value, "password")}
               onBlur={blurHandler}
             />
