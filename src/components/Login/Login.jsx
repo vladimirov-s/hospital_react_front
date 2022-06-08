@@ -139,7 +139,7 @@ const Login = () => {
           </label>
         </div>
         <div className='auth__form__botomblok'>
-          <button disabled={!isValid} className='auth__form__submit relative'>
+          <button disabled={!isValid} className='auth__form__submit'>
             Вход
           </button>
           <Link className='auth__form_link' to='/signup'>

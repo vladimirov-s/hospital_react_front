@@ -10,41 +10,19 @@ $radius: 3px;
   flex-wrap: wrap;
   position: relative;
 
+  .auth__form__paragraph {
+    font-size: 36px;
+  }
+
   .auth__form__textfield,
   .auth__form__submit {
     border-radius: $radius;
     outline: none;
   }
 
-  .auth__form_link {
-    text-decoration: none;
-    color: #222222;
-
-    &:hover {
-      text-shadow: 0 0 3px grey;
-    }
-  }
-
   .auth__form__submit,
   .auth__form_link {
     font-size: 18px;
-  }
-
-  .auth__form__submit {
-    padding: 10px;
-    border: 0;
-    cursor: pointer;
-
-    &:hover {
-      box-shadow: $SecondShadow;
-    }
-
-    &:disabled {
-      &:hover {
-        box-shadow: none;
-        cursor: not-allowed;
-      }
-    }
   }
 
   >* {
@@ -63,15 +41,6 @@ $radius: 3px;
     }
   }
 
-  .wrongtextfield {
-    box-shadow: 0 0 2px 1px rgba(255, 0, 0, 0.55);
-    background-color: rgba(221, 13, 13, 0.05);
-  }
-
-  .auth__form__paragraph {
-    font-size: 36px;
-  }
-
   .auth__form__bodyForm {
     top: 112px;
     max-width: 320px;
@@ -88,35 +57,40 @@ $radius: 3px;
     :nth-child(2) {
       position: relative;
     }
-  }
 
-  .auth__form_showPassword {
-    bottom: 7px;
-    left: calc(100% - 30px);
-    flex: 30px;
-    position: absolute;
-  }
+    .auth__form_loginandpassword {
+      padding: 10px 0 5px 0;
+      text-align: left;
+      font-weight: 800;
+      display: flex;
+      flex-wrap: wrap;
 
-  .auth__form__textfield {
-    flex: calc(100% - 30px);
-    line-height: 1.9;
-    font-size: inherit;
-    border-color: #22222238;
-
-    &::placeholder {
-      color: #22222a80;
+      span {
+        flex: 100%;
+      }
     }
-  }
 
-  .auth__form_loginandpassword {
-    padding: 10px 0 5px 0;
-    text-align: left;
-    font-weight: 800;
-    display: flex;
-    flex-wrap: wrap;
+    .auth__form__textfield {
+      flex: calc(100% - 30px);
+      line-height: 1.9;
+      font-size: inherit;
+      border-color: #22222238;
 
-    span {
-      flex: 100%;
+      &::placeholder {
+        color: #22222a80;
+      }
+    }
+
+    .wrongtextfield {
+      box-shadow: 0 0 2px 1px rgba(255, 0, 0, 0.55);
+      background-color: rgba(221, 13, 13, 0.05);
+    }
+
+    .auth__form_showPassword {
+      bottom: 7px;
+      left: calc(100% - 30px);
+      flex: 30px;
+      position: absolute;
     }
   }
 
@@ -128,10 +102,36 @@ $radius: 3px;
     flex-wrap: wrap;
     justify-content: center;
     position: absolute;
-  }
 
-  .auth__form__submit {
-    margin-bottom: 5px;
-    position: relative;
+    .auth__form__submit {
+      margin-bottom: 5px;
+      position: relative;
+    }
+
+    .auth__form_link {
+      text-decoration: none;
+      color: #222222;
+
+      &:hover {
+        text-shadow: 0 0 3px grey;
+      }
+    }
+
+    .auth__form__submit {
+      padding: 10px;
+      border: 0;
+      cursor: pointer;
+
+      &:hover {
+        box-shadow: $SecondShadow;
+      }
+
+      &:disabled {
+        &:hover {
+          box-shadow: none;
+          cursor: not-allowed;
+        }
+      }
+    }
   }
 }
