@@ -92,18 +92,14 @@ const Signup = () => {
   };
 
   const tryValidSetState = () => {
-    if (
+    return (
       !errUsername &&
       !errPassword &&
       password === secondPassword &&
       username &&
       password &&
       secondPassword
-    ) {
-      return true;
-    } else {
-      return false;
-    }
+    );
   };
 
   useEffect(() => {
