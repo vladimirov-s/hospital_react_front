@@ -49,11 +49,7 @@ const Signup = () => {
     if (!secondPassword) {
       return true;
     }
-    if (password === secondPassword) {
-      return true;
-    } else {
-      return false;
-    }
+    return password === secondPassword;
   };
 
   const blurHandler = (e) => {

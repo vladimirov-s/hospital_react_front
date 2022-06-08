@@ -22,10 +22,10 @@ const Login = () => {
   const { errUsername, errPassword } = errors;
   const { username, password } = userField;
 
-  const register = async (e) => {
+  const register = (e) => {
     e.preventDefault();
     if (isValid) {
-      await store.login(username, password);
+      store.login(username, password);
     }
   };
 
