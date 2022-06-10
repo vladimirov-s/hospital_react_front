@@ -2,6 +2,7 @@ import { makeAutoObservable } from "mobx";
 import axios from "axios";
 import AuthService from "src/services/Authservise";
 import { url_server } from "src/helper/constants";
+const pubSub = require("./../pubsub");
 
 export default class Store {
   user = {};
@@ -32,6 +33,7 @@ export default class Store {
   snackHolder(string) {
     this.setOpenSnack(true);
     this.setMessage(string);
+    pubSub.subscribe("Новое сообщение", string);
   }
 
   setUser(user) {

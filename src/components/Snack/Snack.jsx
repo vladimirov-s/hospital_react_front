@@ -1,8 +1,8 @@
+import { Context } from "src/index";
 import * as React from "react";
-import { observer } from "mobx-react-lite";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
-import { Context } from "src/index";
+const pubSub = require("../../pubsub");
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant='filled' {...props} />;
@@ -10,7 +10,17 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 
 const Snack = () => {
   const store = React.useContext(Context);
+  const [message, setMessage] = React.useState("");
+  const [openSnack, setOpenSnack] = React.useState(false);
 
+  let subscription;
+
+  subscription = pubSub.subscribe("anEvent", (data) => {
+    setMessage(data);
+    setOpenSnack(true);
+    console.log(`"anEvent", was published with this data: "${data}"`);
+    subscription.unsubscribe();
+  });
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
@@ -19,15 +29,12 @@ const Snack = () => {
   };
 
   return (
-    <Snackbar
-      open={store.openSnack}
-      autoHideDuration={5000}
-      onClose={handleClose}>
+    <Snackbar open={openSnack} autoHideDuration={5000} onClose={handleClose}>
       <Alert severity='warning' onClose={handleClose} sx={{ width: "100%" }}>
-        {store.message}
+        {message}
       </Alert>
     </Snackbar>
   );
 };
 
-export default observer(Snack);
+export default Snack;

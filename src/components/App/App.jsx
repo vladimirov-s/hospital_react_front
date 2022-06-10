@@ -1,5 +1,4 @@
 import { useContext, useEffect } from "react";
-import { observer } from "mobx-react-lite";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { Context } from "src/index";
 import Main from "components/Main/Main";
@@ -7,7 +6,6 @@ import Appointments from "components/Appointments/Appointments";
 import "./style.scss";
 
 const App = () => {
-  //mobx используется для хранения и обработки состояний в контексте
   const store = useContext(Context);
 
   useEffect(() => {
@@ -47,4 +45,4 @@ const App = () => {
   );
 };
 
-export default observer(App);
+export default App;
