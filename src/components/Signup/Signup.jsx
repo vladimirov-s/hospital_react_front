@@ -16,12 +16,12 @@ const Signup = () => {
     secondPassword: "",
   });
   const [errors, setErrors] = useState({
-    errUsername: "",
-    errPassword: "",
-    errSecondPassword: "",
+    errorUserName: "",
+    errorPassword: "",
+    errorSecondPassword: "",
   });
   const { username, password, secondPassword } = userfield;
-  const { errUsername, errPassword, errSecondPassword } = errors;
+  const { errorUserName, errorPassword, errorSecondPassword } = errors;
   const registr = (e) => {
     e.preventDefault();
     if (tryValidSetState) {
@@ -31,11 +31,6 @@ const Signup = () => {
 
   const showPasswort = () => {
     showPass !== "text" ? setShowPass("text") : setShowPass("password");
-  };
-
-  const callSnack = (text) => {
-    store.setMessage(text);
-    store.setOpenSnack(true);
   };
 
   const errorHandler = (msg, errName) => {
@@ -57,44 +52,44 @@ const Signup = () => {
 
     if (candidate === "username") {
       if (userNameValidate(username)) {
-        errorHandler("", "errUsername");
+        errorHandler("", "errorUserName");
       } else {
         errorHandler(
           "Поле Login должно быть от 6 символов, разрешены только латинские буквы",
-          "errUsername"
+          "errorUserName"
         );
       }
     }
 
     if (candidate === "password") {
       if (passwordValidate(password)) {
-        errorHandler("", "errPassword");
+        errorHandler("", "errorPassword");
       } else {
         errorHandler(
           "Пароль должен быть от 6 до 12 символов латинские буквы и цифры",
-          "errPassword"
+          "errorPassword"
         );
       }
     }
     if (candidate === "secondPassword" && secondPassword === password) {
-      errorHandler("", "errSecondPassword");
+      errorHandler("", "errorSecondPassword");
     }
 
     if (candidate === "secondPassword" && secondPassword !== password) {
-      errorHandler("Введённые пароли должны совпадать", "errSecondPassword");
+      errorHandler("Введённые пароли должны совпадать", "errorSecondPassword");
     }
 
     tryValidSetState();
   };
 
-  const keyUpHandler = (text, type) => {
+  const changeHandler = (text, type) => {
     setUserField({ ...userfield, [type]: text });
   };
 
   const tryValidSetState = () => {
     return (
-      !errUsername &&
-      !errPassword &&
+      !errorUserName &&
+      !errorPassword &&
       password === secondPassword &&
       username &&
       password &&
@@ -103,16 +98,16 @@ const Signup = () => {
   };
 
   useEffect(() => {
-    if (errUsername) {
-      callSnack(errUsername);
+    if (errorUserName) {
+      store.snackHolder(errorUserName);
       return;
     }
-    if (errPassword) {
-      callSnack(errPassword);
+    if (errorPassword) {
+      store.snackHolder(errorPassword);
       return;
     }
-    if (errSecondPassword) {
-      callSnack(errSecondPassword);
+    if (errorSecondPassword) {
+      store.snackHolder(errorSecondPassword);
       return;
     }
     store.setOpenSnack(false);
@@ -123,41 +118,43 @@ const Signup = () => {
       <form className='auth__form' onSubmit={registr}>
         <p className='auth__form__paragraph'>Регистрация</p>
         <div className='auth__form__bodyForm'>
-          <label className='auth__form_loginandpassword'>
+          <label className='auth__form__bodyForm_loginandpassword'>
             Логин:
             <input
               className={
-                (errUsername && "auth__form__textfield wrongtextfield") ||
-                "auth__form__textfield"
+                (errorUserName &&
+                  "auth__form__bodyForm_loginandpassword__textfield wrongtextfield") ||
+                "auth__form__bodyForm_loginandpassword__textfield"
               }
               type='text'
               placeholder='username'
               name='username'
               autoComplete='off'
-              value={userfield.username}
-              onChange={(e) => keyUpHandler(e.target.value, "username")}
+              value={username}
+              onChange={(e) => changeHandler(e.target.value, "username")}
               onBlur={blurHandler}
             />
           </label>
 
-          <label className='auth__form_loginandpassword'>
+          <label className='auth__form__bodyForm_loginandpassword'>
             <span>Пароль:</span>
             <input
               className={
-                (errPassword && "auth__form__textfield wrongtextfield") ||
-                "auth__form__textfield"
+                (errorPassword &&
+                  "auth__form__bodyForm_loginandpassword__textfield wrongtextfield") ||
+                "auth__form__bodyForm_loginandpassword__textfield"
               }
               type={showPass}
               name='password'
               placeholder='password'
               value={password}
-              onChange={(e) => keyUpHandler(e.target.value, "password")}
+              onChange={(e) => changeHandler(e.target.value, "password")}
               onBlur={blurHandler}
             />
             <i
               title={showPass !== "text" ? "Показать пароль" : "Скрыть пароль"}
               onClick={() => showPasswort()}
-              className='auth__form_showPassword'>
+              className='auth__form__bodyForm_loginandpassword_showPassword'>
               {showPass !== "text" ? (
                 <RemoveRedEyeIcon />
               ) : (
@@ -166,20 +163,20 @@ const Signup = () => {
             </i>
           </label>
 
-          <label className='auth__form_loginandpassword'>
+          <label className='auth__form__bodyForm_loginandpassword'>
             Повторите пароль:
             <input
               className={
                 checkEqualPass()
-                  ? "auth__form__textfield "
-                  : "auth__form__textfield wrongtextfield"
+                  ? "auth__form__bodyForm_loginandpassword__textfield "
+                  : "auth__form__bodyForm_loginandpassword__textfield wrongtextfield"
               }
               type={showPass}
               name='secondPassword'
               placeholder='password'
-              value={userfield.secondPassword}
+              value={secondPassword}
               onChange={(e) => {
-                keyUpHandler(e.target.value, "secondPassword");
+                changeHandler(e.target.value, "secondPassword");
               }}
               onBlur={blurHandler}
             />
@@ -188,10 +185,10 @@ const Signup = () => {
         <div className='auth__form__botomblok'>
           <button
             disabled={!tryValidSetState() || !checkEqualPass()}
-            className='auth__form__submit'>
+            className='auth__form__botomblok__submit'>
             Зарегистрироваться
           </button>
-          <Link className='auth__form_link' to='/'>
+          <Link className='auth__form__botomblok_link' to='/'>
             Авторизоваться
           </Link>
         </div>

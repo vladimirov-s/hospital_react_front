@@ -2,7 +2,7 @@ import { observer } from "mobx-react-lite";
 import { useContext } from "react";
 import { Button } from "@mui/material";
 import { Context } from "src/index";
-import { Hospital } from "src/imgs/pics";
+import headlogo from "src/imgs/headlogo.svg";
 import "./style.scss";
 
 const Header = ({ headText, logout }) => {
@@ -13,7 +13,7 @@ const Header = ({ headText, logout }) => {
 
   return (
     <header className='header'>
-      <Hospital need='headlogo' />
+      <img src={headlogo} className='headlogo' alt='' />
       <h2 className='header__headtext'>{headText}</h2>
       {logout && (
         <Button onClick={goOut} variant='contained'>

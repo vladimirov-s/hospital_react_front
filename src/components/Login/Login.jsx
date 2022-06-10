@@ -16,38 +16,30 @@ const Login = () => {
   });
   const [isValid, setIsValid] = useState(false);
   const [errors, setErrors] = useState({
-    errUsername: "",
-    errPassword: "",
+    errorUserName: "",
+    errorPassword: "",
   });
-  const { errUsername, errPassword } = errors;
+  const { errorUserName, errorPassword } = errors;
   const { username, password } = userField;
 
-  const register = (e) => {
-    e.preventDefault();
-    if (isValid) {
-      store.login(username, password);
-    }
+  const changeHandler = (text, type) => {
+    setUserField({ ...userField, [type]: text });
   };
 
   useEffect(() => {
-    if (errPassword) {
-      callSnack(errPassword);
+    if (errorPassword) {
+      store.snackHolder(errorPassword);
       return;
     }
-    if (errUsername) {
-      callSnack(errUsername);
+    if (errorUserName) {
+      store.snackHolder(errorUserName);
       return;
     }
     store.setOpenSnack(false);
   }, [errors]);
 
-  const callSnack = (text) => {
-    store.setMessage(text);
-    store.setOpenSnack(true);
-  };
-
-  const showPassJobber = () => {
-    showPass !== "text" ? setShowPass("text") : setShowPass("password");
+  const showPassJobber = (e) => {
+    showPass === "text" ? setShowPass("password") : setShowPass("text");
   };
 
   const errorHandler = (msg, errName) => {
@@ -59,11 +51,11 @@ const Login = () => {
 
     if (candidate === "username") {
       if (userNameValidate(username)) {
-        errorHandler("", "errUsername");
+        errorHandler("", "errorUserName");
       } else {
         errorHandler(
           "Поле Login должно быть от 6 символов, разрешены только латинские буквы",
-          "errUsername"
+          "errorUserName"
         );
         setIsValid(false);
       }
@@ -71,11 +63,11 @@ const Login = () => {
 
     if (candidate === "password") {
       if (passwordValidate(password)) {
-        errorHandler("", "errPassword");
+        errorHandler(null, "errorPassword");
       } else {
         errorHandler(
           "Пароль должен быть от 6 до 12 символов латинские буквы и цифры",
-          "errPassword"
+          "errorPassword"
         );
         setIsValid(false);
       }
@@ -84,13 +76,16 @@ const Login = () => {
     tryValidSetState();
   };
 
-  const keyUpHandler = (text, type) => {
-    setUserField({ ...userField, [type]: text });
-  };
-
   const tryValidSetState = () => {
     if (!errors.password && !errors.username && username && password) {
       setIsValid(true);
+    }
+  };
+
+  const register = (e) => {
+    e.preventDefault();
+    if (isValid) {
+      store.login(username, password);
     }
   };
 
@@ -99,37 +94,39 @@ const Login = () => {
       <form onSubmit={register} className='auth__form'>
         <p className='auth__form__paragraph'>Войти в систему </p>
         <div className='auth__form__bodyForm'>
-          <label className='auth__form_loginandpassword'>
+          <label className='auth__form__bodyForm_loginandpassword'>
             Логин:
             <input
               className={
-                (errUsername && "auth__form__textfield wrongtextfield") ||
-                "auth__form__textfield"
+                (errorUserName &&
+                  "auth__form__bodyForm_loginandpassword__textfield wrongtextfield") ||
+                "auth__form__bodyForm_loginandpassword__textfield"
               }
               name='username'
               placeholder='username'
               autoComplete='off'
-              onKeyUp={(e) => keyUpHandler(e.target.value, "username")}
+              onChange={(e) => changeHandler(e.target.value, "username")}
               onBlur={blurHandler}
             />
           </label>
-          <label className='auth__form_loginandpassword'>
+          <label className='auth__form__bodyForm_loginandpassword'>
             <span> Пароль:</span>
             <input
               className={
-                (errPassword && "auth__form__textfield wrongtextfield") ||
-                "auth__form__textfield"
+                (errorPassword &&
+                  "auth__form__bodyForm_loginandpassword__textfield wrongtextfield") ||
+                "auth__form__bodyForm_loginandpassword__textfield"
               }
               type={showPass}
               name='password'
               placeholder='password'
-              onKeyUp={(e) => keyUpHandler(e.target.value, "password")}
+              onChange={(e) => changeHandler(e.target.value, "password")}
               onBlur={blurHandler}
             />
             <i
-              title={showPass !== "text" ? "Показать пароль" : "Скрыть пароль"}
+              title={showPass === "text" ? "Скрыть пароль" : "Показать пароль"}
               onClick={showPassJobber}
-              className='auth__form_showPassword'>
+              className='auth__form__bodyForm_loginandpassword_showPassword'>
               {showPass !== "text" ? (
                 <RemoveRedEyeIcon />
               ) : (
@@ -139,10 +136,10 @@ const Login = () => {
           </label>
         </div>
         <div className='auth__form__botomblok'>
-          <button disabled={!isValid} className='auth__form__submit'>
+          <button disabled={!isValid} className='auth__form__botomblok__submit'>
             Вход
           </button>
-          <Link className='auth__form_link' to='/signup'>
+          <Link className='auth__form__botomblok_link' to='/signup'>
             Зарегистрироваться
           </Link>
         </div>

@@ -29,6 +29,11 @@ export default class Store {
     this.isAuth = boolean;
   }
 
+  snackHolder(string) {
+    this.setOpenSnack(true);
+    this.setMessage(string);
+  }
+
   setUser(user) {
     this.user = user;
   }
