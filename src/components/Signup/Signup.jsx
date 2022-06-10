@@ -15,141 +15,65 @@ const Signup = () => {
     password: "",
     secondPassword: "",
   });
-  const [errors, setErrors] = useState({
-    errorUserName: "",
-    errorPassword: "",
-    errorSecondPassword: "",
-  });
   const { username, password, secondPassword } = userfield;
-  const { errorUserName, errorPassword, errorSecondPassword } = errors;
-  const registr = (e) => {
-    e.preventDefault();
-    if (tryValidSetState) {
-      store.registration(username, password);
-    }
-  };
 
   const showPasswort = () => {
     showPass !== "text" ? setShowPass("text") : setShowPass("password");
   };
 
-  const errorHandler = (msg, errName) => {
-    setErrors({
-      ...errors,
-      [errName]: msg,
-    });
-  };
-
-  const checkEqualPass = () => {
-    if (!secondPassword) {
-      return true;
-    }
-    return password === secondPassword;
-  };
-
-  const blurHandler = (e) => {
-    const candidate = e.target.name;
-
-    if (candidate === "username") {
-      if (userNameValidate(username)) {
-        errorHandler("", "errorUserName");
-      } else {
-        errorHandler(
-          "Поле Login должно быть от 6 символов, разрешены только латинские буквы",
-          "errorUserName"
-        );
-      }
+  const blurHandler = () => {
+    if (!userNameValidate(username)) {
+      store.snackHolder(
+        "Поле Login должно быть от 6 символов, разрешены только латинские буквы"
+      );
+      return;
     }
 
-    if (candidate === "password") {
-      if (passwordValidate(password)) {
-        errorHandler("", "errorPassword");
-      } else {
-        errorHandler(
-          "Пароль должен быть от 6 до 12 символов латинские буквы и цифры",
-          "errorPassword"
-        );
-      }
-    }
-    if (candidate === "secondPassword" && secondPassword === password) {
-      errorHandler("", "errorSecondPassword");
+    if (!passwordValidate(password)) {
+      store.snackHolder(
+        "Пароль должен быть от 6 до 12 символов латинские буквы и цифры"
+      );
+      return;
     }
 
-    if (candidate === "secondPassword" && secondPassword !== password) {
-      errorHandler("Введённые пароли должны совпадать", "errorSecondPassword");
+    if (secondPassword !== password) {
+      store.snackHolder("Введённые пароли должны совпадать");
+      return;
     }
-
-    tryValidSetState();
+    store.registration(username, password);
   };
 
   const changeHandler = (text, type) => {
     setUserField({ ...userfield, [type]: text });
   };
 
-  const tryValidSetState = () => {
-    return (
-      !errorUserName &&
-      !errorPassword &&
-      password === secondPassword &&
-      username &&
-      password &&
-      secondPassword
-    );
-  };
-
-  useEffect(() => {
-    if (errorUserName) {
-      store.snackHolder(errorUserName);
-      return;
-    }
-    if (errorPassword) {
-      store.snackHolder(errorPassword);
-      return;
-    }
-    if (errorSecondPassword) {
-      store.snackHolder(errorSecondPassword);
-      return;
-    }
-    store.setOpenSnack(false);
-  }, [errors]);
-
   return (
     <div>
-      <form className='auth__form' onSubmit={registr}>
+      <form className='auth__form' onSubmit={blurHandler}>
         <p className='auth__form__paragraph'>Регистрация</p>
         <div className='auth__form__bodyForm'>
           <label className='auth__form__bodyForm_loginandpassword'>
             Логин:
             <input
-              className={
-                (errorUserName &&
-                  "auth__form__bodyForm_loginandpassword__textfield wrongtextfield") ||
-                "auth__form__bodyForm_loginandpassword__textfield"
-              }
+              className='auth__form__bodyForm_loginandpassword__textfield'
               type='text'
               placeholder='username'
               name='username'
               autoComplete='off'
               value={username}
               onChange={(e) => changeHandler(e.target.value, "username")}
-              onBlur={blurHandler}
             />
           </label>
 
           <label className='auth__form__bodyForm_loginandpassword'>
             <span>Пароль:</span>
             <input
-              className={
-                (errorPassword &&
-                  "auth__form__bodyForm_loginandpassword__textfield wrongtextfield") ||
-                "auth__form__bodyForm_loginandpassword__textfield"
-              }
+              className='auth__form__bodyForm_loginandpassword__textfield'
               type={showPass}
               name='password'
               placeholder='password'
               value={password}
               onChange={(e) => changeHandler(e.target.value, "password")}
-              onBlur={blurHandler}
             />
             <i
               title={showPass !== "text" ? "Показать пароль" : "Скрыть пароль"}
@@ -166,11 +90,7 @@ const Signup = () => {
           <label className='auth__form__bodyForm_loginandpassword'>
             Повторите пароль:
             <input
-              className={
-                checkEqualPass()
-                  ? "auth__form__bodyForm_loginandpassword__textfield "
-                  : "auth__form__bodyForm_loginandpassword__textfield wrongtextfield"
-              }
+              className='auth__form__bodyForm_loginandpassword__textfield'
               type={showPass}
               name='secondPassword'
               placeholder='password'
@@ -178,14 +98,11 @@ const Signup = () => {
               onChange={(e) => {
                 changeHandler(e.target.value, "secondPassword");
               }}
-              onBlur={blurHandler}
             />
           </label>
         </div>
         <div className='auth__form__botomblok'>
-          <button
-            disabled={!tryValidSetState() || !checkEqualPass()}
-            className='auth__form__botomblok__submit'>
+          <button className='auth__form__botomblok__submit'>
             Зарегистрироваться
           </button>
           <Link className='auth__form__botomblok_link' to='/'>
