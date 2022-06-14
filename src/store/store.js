@@ -1,25 +1,16 @@
-import { makeAutoObservable } from "mobx";
 import axios from "axios";
 import AuthService from "src/services/Authservise";
 import { url_server } from "src/helper/constants";
-const pubSub = require("./../pubsub");
+import PubSub from "pubsub-js";
 
 export default class Store {
   user = {};
   isAuth = false;
   message = "";
-  openSnack = false;
   isLoading = false;
-  constructor() {
-    makeAutoObservable(this);
-  }
 
   setMessage(string) {
     this.message = string;
-  }
-
-  setOpenSnack(boolean) {
-    this.openSnack = boolean;
   }
 
   setIsLoading(boolean) {
@@ -31,9 +22,8 @@ export default class Store {
   }
 
   snackHolder(string) {
-    this.setOpenSnack(true);
     this.setMessage(string);
-    pubSub.subscribe("Новое сообщение", string);
+    PubSub.publish("message for Snack", string);
   }
 
   setUser(user) {

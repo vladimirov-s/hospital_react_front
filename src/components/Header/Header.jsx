@@ -1,4 +1,3 @@
-import { observer } from "mobx-react-lite";
 import { useContext } from "react";
 import { Button } from "@mui/material";
 import { Context } from "src/index";
@@ -24,4 +23,4 @@ const Header = ({ headText, logout }) => {
   );
 };
 
-export default observer(Header);
+export default Header;

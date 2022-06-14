@@ -1,4 +1,3 @@
-import { observer } from "mobx-react-lite";
 import { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
@@ -17,7 +16,7 @@ const Signup = () => {
   });
   const { username, password, secondPassword } = userfield;
 
-  const showPasswort = () => {
+  const showPassword = () => {
     showPass !== "text" ? setShowPass("text") : setShowPass("password");
   };
 
@@ -77,7 +76,7 @@ const Signup = () => {
             />
             <i
               title={showPass !== "text" ? "Показать пароль" : "Скрыть пароль"}
-              onClick={() => showPasswort()}
+              onClick={showPassword}
               className='auth__form__bodyForm_loginandpassword_showPassword'>
               {showPass !== "text" ? (
                 <RemoveRedEyeIcon />
@@ -114,4 +113,4 @@ const Signup = () => {
   );
 };
 
-export default observer(Signup);
+export default Signup;

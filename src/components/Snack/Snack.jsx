@@ -2,7 +2,7 @@ import { Context } from "src/index";
 import * as React from "react";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
-const pubSub = require("../../pubsub");
+import PubSub from "pubsub-js";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant='filled' {...props} />;
@@ -13,19 +13,18 @@ const Snack = () => {
   const [message, setMessage] = React.useState("");
   const [openSnack, setOpenSnack] = React.useState(false);
 
-  let subscription;
-
-  subscription = pubSub.subscribe("anEvent", (data) => {
-    setMessage(data);
+  const mySubscriber = () => {
+    setMessage(store.message);
     setOpenSnack(true);
-    console.log(`"anEvent", was published with this data: "${data}"`);
-    subscription.unsubscribe();
-  });
+  };
+
+  PubSub.subscribe("message for Snack", mySubscriber);
+
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
     }
-    store.setOpenSnack(false);
+    setOpenSnack(false);
   };
 
   return (
