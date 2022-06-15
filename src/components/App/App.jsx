@@ -1,18 +1,32 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { Context } from "src/index";
+import PubSub from "pubsub-js";
 import Main from "components/Main/Main";
 import Appointments from "components/Appointments/Appointments";
 import "./style.scss";
 
 const App = () => {
   const store = useContext(Context);
+  const [isAuth, setIsAuth] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const authHolder = () => {
+    setIsAuth(store.isAuth);
+  };
+
+  const loadingHolder = () => {
+    setIsLoading(store.isLoading);
+  };
+
+  PubSub.subscribe("state Auth", authHolder);
+  PubSub.subscribe("state Loading", loadingHolder);
 
   useEffect(() => {
     store.checkAuth();
   }, [store]);
 
-  if (store.isLoading) {
+  if (isLoading) {
     return (
       <div className='App'>
         <div>Загрузка....</div>
@@ -20,7 +34,7 @@ const App = () => {
     );
   }
 
-  if (store.isAuth) {
+  if (isAuth) {
     return (
       <div className='App'>
         <Routes>

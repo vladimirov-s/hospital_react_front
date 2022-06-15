@@ -1,7 +1,7 @@
 import axios from "axios";
+import PubSub from "pubsub-js";
 import AuthService from "src/services/Authservise";
 import { url_server } from "src/helper/constants";
-import PubSub from "pubsub-js";
 
 export default class Store {
   user = {};
@@ -33,7 +33,7 @@ export default class Store {
   async logout() {
     try {
       await AuthService.logout();
-      localStorage.removeItem("accessToken");
+      PubSub.publish("state Auth");
       this.setAuth(false);
       this.setUser({});
     } catch (e) {
@@ -41,29 +41,18 @@ export default class Store {
     }
   }
 
-  refresh = async (next) => {
-    try {
-      await axios.get(`${url_server}/refresh`, {
-        withCredentials: true,
-      });
-    } catch (e) {
-      next(e);
-    }
-  };
-
   async login(name, password) {
     try {
       const response = await AuthService.login(name, password);
+      PubSub.publish("state Auth");
       this.setAuth(true);
       this.setUser(response.data.user);
     } catch (e) {
       if (e.code === "ERR_NETWORK") {
-        this.setOpenSnack(true);
-        this.setMessage("Сервер недоступен");
+        this.snackHolder("Сервер недоступен");
       }
       if (e.response.status === 400) {
-        this.setOpenSnack(true);
-        this.setMessage("Проверьте правильность введеных данных");
+        this.snackHolder("Проверьте правильность введеных данных");
       }
     }
   }
@@ -71,6 +60,7 @@ export default class Store {
   async registration(username, password) {
     try {
       const response = await AuthService.registration(username, password);
+      PubSub.publish("state Auth");
       this.setAuth(true);
       this.setUser(response.data.user);
     } catch (e) {
@@ -79,8 +69,7 @@ export default class Store {
         this.setMessage("Сервер недоступен");
       }
       if (e.response.status === 409) {
-        this.setOpenSnack(true);
-        this.setMessage("Такой юзернэйм уже существует");
+        this.snackHolder("Такой юзернэйм уже существует");
       }
       return e;
     }
@@ -90,11 +79,13 @@ export default class Store {
     this.setIsLoading(true);
     try {
       const response = await AuthService.refresh();
+      PubSub.publish("state Auth");
       this.setAuth(true);
       this.setUser(response.data);
     } catch (e) {
       return e;
     } finally {
+      PubSub.publish("state Loading");
       this.setIsLoading(false);
     }
   }

@@ -20,7 +20,8 @@ const Signup = () => {
     showPass !== "text" ? setShowPass("text") : setShowPass("password");
   };
 
-  const blurHandler = () => {
+  const blurHandler = (e) => {
+    e.preventDefault();
     if (!userNameValidate(username)) {
       store.snackHolder(
         "Поле Login должно быть от 6 символов, разрешены только латинские буквы"
