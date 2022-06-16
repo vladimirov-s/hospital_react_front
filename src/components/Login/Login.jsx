@@ -29,13 +29,13 @@ const Login = () => {
       store.snackHolder(
         "Поле Login должно быть от 6 символов, разрешены только латинские буквы"
       );
-      return false;
+      return ;
     }
     if (!passwordValidate(password)) {
       store.snackHolder(
         "Пароль должен быть от 6 до 12 символов латинские буквы и цифры"
       );
-      return false;
+      return ;
     }
     store.login(username, password);
   };

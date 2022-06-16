@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { Context } from "src/index";
 import PubSub from "pubsub-js";
-import Main from "components/Main/Main";
+import Authentication from "components/Authentication/Authentication";
 import Appointments from "components/Appointments/Appointments";
 import "./style.scss";
 
@@ -48,10 +48,13 @@ const App = () => {
   return (
     <div className='App'>
       <Routes>
-        <Route path='/login' element={<Main headText='Войти в систему' />} />
+        <Route
+          path='/login'
+          element={<Authentication headText='Войти в систему' />}
+        />
         <Route
           path='/signup'
-          element={<Main headText='Зарегистрироваться в системе' />}
+          element={<Authentication headText='Зарегистрироваться в системе' />}
         />
         <Route path='*' element={<Navigate to='/login' />} />
       </Routes>

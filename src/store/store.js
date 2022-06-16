@@ -1,7 +1,5 @@
-import axios from "axios";
 import PubSub from "pubsub-js";
 import AuthService from "src/services/Authservise";
-import { url_server } from "src/helper/constants";
 
 export default class Store {
   user = {};
@@ -23,7 +21,7 @@ export default class Store {
 
   snackHolder(string) {
     this.setMessage(string);
-    PubSub.publish("message for Snack", string);
+    PubSub.publish("message for Snack");
   }
 
   setUser(user) {
@@ -65,8 +63,7 @@ export default class Store {
       this.setUser(response.data.user);
     } catch (e) {
       if (e.code === "ERR_NETWORK") {
-        this.setOpenSnack(true);
-        this.setMessage("Сервер недоступен");
+        this.snackHolder("Сервер недоступен");
       }
       if (e.response.status === 409) {
         this.snackHolder("Такой юзернэйм уже существует");
@@ -77,6 +74,7 @@ export default class Store {
 
   async checkAuth() {
     this.setIsLoading(true);
+    PubSub.publish("state Loading");
     try {
       const response = await AuthService.refresh();
       PubSub.publish("state Auth");
