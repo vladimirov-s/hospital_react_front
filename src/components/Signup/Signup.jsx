@@ -9,12 +9,11 @@ import "./style.scss";
 const Signup = () => {
   const store = useContext(Context);
   const [showPass, setShowPass] = useState("password");
-  const [userfield, setUserField] = useState({
+  const [userField, setUserField] = useState({
     username: "",
     password: "",
     secondPassword: "",
   });
-  const { username, password, secondPassword } = userfield;
 
   const showPassword = () => {
     showPass !== "text" ? setShowPass("text") : setShowPass("password");
@@ -22,29 +21,29 @@ const Signup = () => {
 
   const blurHandler = (e) => {
     e.preventDefault();
-    if (!userNameValidate(username)) {
+    if (!userNameValidate(userField.username)) {
       store.snackHolder(
         "Поле Login должно быть от 6 символов, разрешены только латинские буквы"
       );
       return;
     }
 
-    if (!passwordValidate(password)) {
+    if (!passwordValidate(userField.password)) {
       store.snackHolder(
         "Пароль должен быть от 6 до 12 символов латинские буквы и цифры"
       );
       return;
     }
 
-    if (secondPassword !== password) {
+    if (userField.secondPassword !== userField.password) {
       store.snackHolder("Введённые пароли должны совпадать");
       return;
     }
-    store.registration(username, password);
+    store.registration(userField.username, userField.password);
   };
 
   const changeHandler = (text, type) => {
-    setUserField({ ...userfield, [type]: text });
+    setUserField({ ...userField.userfield, [type]: text });
   };
 
   return (
@@ -60,7 +59,7 @@ const Signup = () => {
               placeholder='username'
               name='username'
               autoComplete='off'
-              value={username}
+              value={userField.username}
               onChange={(e) => changeHandler(e.target.value, "username")}
             />
           </label>
@@ -72,7 +71,7 @@ const Signup = () => {
               type={showPass}
               name='password'
               placeholder='password'
-              value={password}
+              value={userField.password}
               onChange={(e) => changeHandler(e.target.value, "password")}
             />
             <i
@@ -94,7 +93,7 @@ const Signup = () => {
               type={showPass}
               name='secondPassword'
               placeholder='password'
-              value={secondPassword}
+              value={userField.secondPassword}
               onChange={(e) => {
                 changeHandler(e.target.value, "secondPassword");
               }}

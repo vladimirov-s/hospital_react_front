@@ -13,7 +13,6 @@ const Login = () => {
     username: "",
     password: "",
   });
-  const { username, password } = userField;
 
   const changeHandler = (text, type) => {
     setUserField({ ...userField, [type]: text });
@@ -25,19 +24,19 @@ const Login = () => {
 
   const blurHandler = (e) => {
     e.preventDefault();
-    if (!userNameValidate(username)) {
+    if (!userNameValidate(userField.username)) {
       store.snackHolder(
         "Поле Login должно быть от 6 символов, разрешены только латинские буквы"
       );
-      return ;
+      return;
     }
-    if (!passwordValidate(password)) {
+    if (!passwordValidate(userField.password)) {
       store.snackHolder(
         "Пароль должен быть от 6 до 12 символов латинские буквы и цифры"
       );
-      return ;
+      return;
     }
-    store.login(username, password);
+    store.login(userField.username, userField.password);
   };
 
   return (

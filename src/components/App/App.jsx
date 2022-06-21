@@ -18,12 +18,11 @@ const App = () => {
     setIsLoading(store.isLoading);
   };
 
-  store.subscribe("state Auth", authHolder);
-  store.subscribe("state Loading", loadingHolder);
-
   useEffect(() => {
     store.checkAuth();
-  }, [store]);
+    store.subscribe("state Loading", loadingHolder);
+    store.subscribe("state Auth", authHolder);
+  }, []);
 
   if (isLoading) {
     return (

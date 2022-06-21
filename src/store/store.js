@@ -35,7 +35,7 @@ export default class Store {
   }
 
   deliverMessage(originalMessage, matchedMessage) {
-    var subscribers = this.messages[matchedMessage];
+    let subscribers = this.messages[matchedMessage];
     this.callSubscriber();
     if (!Object.prototype.hasOwnProperty.call(this.messages, matchedMessage)) {
       return;
@@ -50,7 +50,7 @@ export default class Store {
 
   createDeliveryFunction(message) {
     return () => {
-      var topic = String(message),
+      let topic = String(message),
         position = topic.lastIndexOf(".");
 
       this.deliverMessage(message, message);
@@ -70,11 +70,11 @@ export default class Store {
     deliver();
   }
 
-  subscribe = function (message, func) {
+  subscribe = (message, func) => {
     if (!Object.prototype.hasOwnProperty.call(this.messages, message)) {
       this.messages[message] = {};
     }
-    var token = "uid_" + String(++this.lastUid);
+    let token = "uid_" + String(++this.lastUid);
     this.messages[message][token] = func;
     return token;
   };
@@ -139,7 +139,6 @@ export default class Store {
       return e;
     } finally {
       this.setIsLoading(false);
-      this.publish("state Loading");
     }
   }
 }
