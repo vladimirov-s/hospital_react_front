@@ -2,7 +2,6 @@ import * as React from "react";
 import { Context } from "src/index";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
-import PubSub from "pubsub-js";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant='filled' {...props} />;
@@ -18,7 +17,9 @@ const Snack = () => {
     setOpenSnack(true);
   };
 
-  PubSub.subscribe("message for Snack", mySubscriber);
+  React.useEffect(() => {
+    store.subscribe("message for Snack", mySubscriber);
+  }, []);
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {

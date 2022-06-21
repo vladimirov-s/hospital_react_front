@@ -1,7 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { Context } from "src/index";
-import PubSub from "pubsub-js";
 import Authentication from "components/Authentication/Authentication";
 import Appointments from "components/Appointments/Appointments";
 import "./style.scss";
@@ -19,8 +18,8 @@ const App = () => {
     setIsLoading(store.isLoading);
   };
 
-  PubSub.subscribe("state Auth", authHolder);
-  PubSub.subscribe("state Loading", loadingHolder);
+  store.subscribe("state Auth", authHolder);
+  store.subscribe("state Loading", loadingHolder);
 
   useEffect(() => {
     store.checkAuth();
@@ -29,7 +28,7 @@ const App = () => {
   if (isLoading) {
     return (
       <div className='App'>
-        <div>Загрузка....</div>
+        <h5>Загрузка....</h5>
       </div>
     );
   }

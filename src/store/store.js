@@ -1,9 +1,11 @@
-import PubSub from "pubsub-js";
 import AuthService from "src/services/Authservise";
 
 export default class Store {
   user = {};
   isAuth = false;
+  messages = {};
+  ALL_SUBSCRIBING_MSG = "*";
+  lastUid = -1;
   message = "";
   isLoading = false;
 
@@ -21,8 +23,61 @@ export default class Store {
 
   snackHolder(string) {
     this.setMessage(string);
-    PubSub.publish("message for Snack");
+    this.publish("message for Snack");
   }
+
+  callSubscriber(subscriber, message) {
+    try {
+      subscriber(message);
+    } catch (ex) {
+      console.error(ex);
+    }
+  }
+
+  deliverMessage(originalMessage, matchedMessage) {
+    var subscribers = this.messages[matchedMessage];
+    this.callSubscriber();
+    if (!Object.prototype.hasOwnProperty.call(this.messages, matchedMessage)) {
+      return;
+    }
+
+    for (let s in subscribers) {
+      if (Object.prototype.hasOwnProperty.call(subscribers, s)) {
+        this.callSubscriber(subscribers[s], originalMessage);
+      }
+    }
+  }
+
+  createDeliveryFunction(message) {
+    return () => {
+      var topic = String(message),
+        position = topic.lastIndexOf(".");
+
+      this.deliverMessage(message, message);
+
+      while (position !== -1) {
+        topic = topic.substr(0, position);
+        position = topic.lastIndexOf(".");
+        this.deliverMessage(message, topic);
+      }
+
+      this.deliverMessage(message, this.ALL_SUBSCRIBING_MSG);
+    };
+  }
+
+  publish(message) {
+    let deliver = this.createDeliveryFunction(message);
+    deliver();
+  }
+
+  subscribe = function (message, func) {
+    if (!Object.prototype.hasOwnProperty.call(this.messages, message)) {
+      this.messages[message] = {};
+    }
+    var token = "uid_" + String(++this.lastUid);
+    this.messages[message][token] = func;
+    return token;
+  };
 
   setUser(user) {
     this.user = user;
@@ -31,8 +86,8 @@ export default class Store {
   async logout() {
     try {
       await AuthService.logout();
-      PubSub.publish("state Auth");
       this.setAuth(false);
+      this.publish("state Auth");
       this.setUser({});
     } catch (e) {
       return e;
@@ -42,8 +97,8 @@ export default class Store {
   async login(name, password) {
     try {
       const response = await AuthService.login(name, password);
-      PubSub.publish("state Auth");
       this.setAuth(true);
+      this.publish("state Auth");
       this.setUser(response.data.user);
     } catch (e) {
       if (e.code === "ERR_NETWORK") {
@@ -58,8 +113,8 @@ export default class Store {
   async registration(username, password) {
     try {
       const response = await AuthService.registration(username, password);
-      PubSub.publish("state Auth");
       this.setAuth(true);
+      this.publish("state Auth");
       this.setUser(response.data.user);
     } catch (e) {
       if (e.code === "ERR_NETWORK") {
@@ -74,17 +129,17 @@ export default class Store {
 
   async checkAuth() {
     this.setIsLoading(true);
-    PubSub.publish("state Loading");
+    this.publish("state Loading");
     try {
       const response = await AuthService.refresh();
-      PubSub.publish("state Auth");
+      this.publish("state Auth");
       this.setAuth(true);
       this.setUser(response.data);
     } catch (e) {
       return e;
     } finally {
-      PubSub.publish("state Loading");
       this.setIsLoading(false);
+      this.publish("state Loading");
     }
   }
 }
