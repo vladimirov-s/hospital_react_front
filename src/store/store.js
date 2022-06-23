@@ -1,4 +1,6 @@
-import AuthService from "src/services/Authservise";
+import AppointmentService from "src/services/Authservise";
+import AppointService from "src/services/AppointmentService";
+import _ from "lodash";
 
 export default class Store {
   user = {};
@@ -7,40 +9,97 @@ export default class Store {
   lastUid = -1;
   message = "";
   isLoading = false;
+  allAppointments = [];
+  filteredSorted = [];
+  sortBy = "date";
+  rangeDates = false;
+  sortDirection = "asc";
+  requiredAction = false;
+  openSnack = false;
+  typeOfTask = "";
+  stateFields = {
+    customer: "",
+    doctor: "",
+    date: "",
+    complaint: "",
+  };
 
-  setMessage(string) {
-    this.message = string;
+  setRangeDates(boolean) {
+    this.rangeDates = boolean;
+  }
+
+  setDir(string) {
+    this.sortDirection = string;
+  }
+
+  setFilteredSorted(a) {
+    this.filteredSorted = a;
+  }
+
+  setSort(string) {
+    this.sortBy = string;
+  }
+
+  primarySortAppoints() {
+    this.setFilteredSorted(_.sortBy(this.allAppointments, this.sortBy));
+  }
+
+  secondarySortAppoints() {
+    this.setFilteredSorted(_.sortBy(this.filteredSorted, this.sortBy));
+  }
+
+  getFields() {
+    const fields = [];
+    for (const key in this.stateFields) {
+      fields.push(key);
+    }
+    return fields;
+  }
+
+  setTypeOfTask(string) {
+    this.typeOfTask = string;
+    this.publish("State type of task");
+  }
+
+  setDate(date) {
+    this.stateFields.date = date;
+    this.publish("condition of the date");
+  }
+
+  setFields(a, b, d) {
+    this.stateFields.customer = a;
+    this.stateFields.doctor = b;
+    this.stateFields.complaint = d;
+  }
+
+  confirmAction(boolean) {
+    this.requiredAction = boolean;
+  }
+
+  setAllAppointments(collection) {
+    this.allAppointments = collection;
   }
 
   setIsLoading(boolean) {
     this.isLoading = boolean;
   }
 
-  setAuth(boolean) {
-    this.isAuth = boolean;
-  }
-
   snackHolder(string) {
-    this.setMessage(string);
+    this.message = string;
     this.publish("message for Snack");
   }
 
-  deliverMessage(originalMessage, matchedMessage) {
-    const subscribers = this.messages[matchedMessage];
-    if (this.message.hasOwnProperty(matchedMessage)) {
+  publish(message) {
+    const subscribers = this.messages[message];
+    if (this.message.hasOwnProperty(message)) {
       return;
     }
 
     for (let s in subscribers) {
       if (Object.prototype.hasOwnProperty.call(subscribers, s)) {
-        subscribers[s](originalMessage);
+        subscribers[s](message);
       }
     }
-  }
-
-  publish(message) {
-    const deliver = this.deliverMessage(message, message);
-    deliver();
   }
 
   subscribe = (message, func) => {
@@ -58,19 +117,24 @@ export default class Store {
 
   async logout() {
     try {
-      await AuthService.logout();
-      this.setAuth(false);
+      await AppointmentService.logout();
+      this.isAuth = false;
       this.publish("state Auth");
       this.setUser({});
     } catch (e) {
-      return e;
+      if (e.code === "ERR_NETWORK") {
+        this.snackHolder("Сервер недоступен");
+      }
+      if (e.code !== "ERR_NETWORK") {
+        this.snackHolder("Что-то пошло не так");
+      }
     }
   }
 
   async login(name, password) {
     try {
-      const response = await AuthService.login(name, password);
-      this.setAuth(true);
+      const response = await AppointmentService.login(name, password);
+      this.isAuth = true;
       this.publish("state Auth");
       this.setUser(response.data.user);
     } catch (e) {
@@ -85,8 +149,11 @@ export default class Store {
 
   async registration(username, password) {
     try {
-      const response = await AuthService.registration(username, password);
-      this.setAuth(true);
+      const response = await AppointmentService.registration(
+        username,
+        password
+      );
+      this.isAuth = true;
       this.publish("state Auth");
       this.setUser(response.data.user);
     } catch (e) {
@@ -102,16 +169,76 @@ export default class Store {
 
   async checkAuth() {
     this.setIsLoading(true);
-    this.publish("state Loading");
     try {
-      const response = await AuthService.refresh();
-      this.setAuth(true);
-      this.publish("state Auth");
+      const response = await AppointmentService.refresh();
+      this.isAuth = true;
       this.setUser(response.data);
+      this.publish("state Auth");
     } catch (e) {
       return e;
     } finally {
       this.setIsLoading(false);
+    }
+  }
+
+  async editAppoint(id, appoint, date) {
+    try {
+      await AppointService.editAppoint(id, appoint, date);
+      const response = await AppointService.getAppointments();
+      this.setAllAppointments(response.data.data);
+      return response.data;
+    } catch (e) {
+      if (e.code === "ERR_NETWORK") {
+        this.snackHolder("Сервер недоступен");
+      }
+      if (e.code !== "ERR_NETWORK") {
+        this.snackHolder("Что-то пошло не так");
+      }
+    }
+  }
+
+  async getAppointments() {
+    try {
+      const response = await AppointService.getAppointments();
+      this.setAllAppointments(response.data.data);
+      return response.data;
+    } catch (e) {
+      if (e.code === "ERR_NETWORK") {
+        this.snackHolder("Сервер недоступен");
+      }
+      if (e.code !== "ERR_NETWORK") {
+        this.snackHolder("Что-то пошло не так");
+      }
+    }
+  }
+
+  async createAppont(visit) {
+    try {
+      await AppointService.createAppont(this.user, visit);
+      const response = await AppointService.getAppointments();
+      this.setAllAppointments(response.data.data);
+      return response.data;
+    } catch (err) {
+      if (err.code === "ERR_NETWORK") {
+        this.snackHolder("Сервер недоступен");
+      }
+      if (err.code !== "ERR_NETWORK") {
+        this.snackHolder("Что-то пошло не так");
+      }
+    }
+  }
+
+  async deleteAppointment(id) {
+    try {
+      const result = await AppointService.deleteAppointment(id);
+      return result.data;
+    } catch (err) {
+      if (err.code === "ERR_NETWORK") {
+        this.snackHolder("Сервер недоступен");
+      }
+      if (err.code !== "ERR_NETWORK") {
+        this.snackHolder("Что-то пошло не так");
+      }
     }
   }
 }
