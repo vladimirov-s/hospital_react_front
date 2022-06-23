@@ -1,23 +1,23 @@
-import * as React from "react";
+import { useState, useContext, forwardRef, useEffect } from "react";
 import { Context } from "src/index";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 
-const Alert = React.forwardRef(function Alert(props, ref) {
+const Alert = forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant='filled' {...props} />;
 });
 
 const Snack = () => {
-  const store = React.useContext(Context);
-  const [message, setMessage] = React.useState("");
-  const [openSnack, setOpenSnack] = React.useState(false);
+  const store = useContext(Context);
+  const [message, setMessage] = useState("");
+  const [openSnack, setOpenSnack] = useState(false);
 
   const mySubscriber = () => {
     setMessage(store.message);
     setOpenSnack(true);
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     store.subscribe("message for Snack", mySubscriber);
   }, []);
 

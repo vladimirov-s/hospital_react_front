@@ -4,7 +4,6 @@ export default class Store {
   user = {};
   isAuth = false;
   messages = {};
-  ALL_SUBSCRIBING_MSG = "*";
   lastUid = -1;
   message = "";
   isLoading = false;
@@ -26,52 +25,26 @@ export default class Store {
     this.publish("message for Snack");
   }
 
-  callSubscriber(subscriber, message) {
-    try {
-      subscriber(message);
-    } catch (ex) {
-      console.error(ex);
-    }
-  }
-
   deliverMessage(originalMessage, matchedMessage) {
-    let subscribers = this.messages[matchedMessage];
-    this.callSubscriber();
-    if (!Object.prototype.hasOwnProperty.call(this.messages, matchedMessage)) {
+    const subscribers = this.messages[matchedMessage];
+    if (this.message.hasOwnProperty(matchedMessage)) {
       return;
     }
 
     for (let s in subscribers) {
       if (Object.prototype.hasOwnProperty.call(subscribers, s)) {
-        this.callSubscriber(subscribers[s], originalMessage);
+        subscribers[s](originalMessage);
       }
     }
   }
 
-  createDeliveryFunction(message) {
-    return () => {
-      let topic = String(message),
-        position = topic.lastIndexOf(".");
-
-      this.deliverMessage(message, message);
-
-      while (position !== -1) {
-        topic = topic.substr(0, position);
-        position = topic.lastIndexOf(".");
-        this.deliverMessage(message, topic);
-      }
-
-      this.deliverMessage(message, this.ALL_SUBSCRIBING_MSG);
-    };
-  }
-
   publish(message) {
-    let deliver = this.createDeliveryFunction(message);
+    const deliver = this.deliverMessage(message, message);
     deliver();
   }
 
   subscribe = (message, func) => {
-    if (!Object.prototype.hasOwnProperty.call(this.messages, message)) {
+    if (!this.message.hasOwnProperty(message)) {
       this.messages[message] = {};
     }
     let token = "uid_" + String(++this.lastUid);
@@ -132,8 +105,8 @@ export default class Store {
     this.publish("state Loading");
     try {
       const response = await AuthService.refresh();
-      this.publish("state Auth");
       this.setAuth(true);
+      this.publish("state Auth");
       this.setUser(response.data);
     } catch (e) {
       return e;

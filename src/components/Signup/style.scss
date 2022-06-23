@@ -14,10 +14,6 @@ $radius: 3px;
     font-size: 36px;
   }
 
-  >* {
-    flex: 100%;
-  }
-
   &__bodyForm {
     top: 112px;
     max-width: 320px;
@@ -27,15 +23,12 @@ $radius: 3px;
     flex-wrap: wrap;
     position: absolute;
 
-    >* {
-      flex: 100%;
-    }
-
     :nth-child(2) {
       position: relative;
     }
 
     &_loginandpassword {
+      flex: 100%;
       padding: 10px 0 5px 0;
       text-align: left;
       font-weight: 800;
