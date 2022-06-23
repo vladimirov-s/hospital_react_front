@@ -1,0 +1,27 @@
+.main {
+  &__wrap {
+    justify-content: space-around;
+    padding: 42px 0;
+    display: flex;
+  }
+
+  .bodyLogo {
+    max-width: 376px;
+    width: 38%;
+    align-self: center;
+    margin-left: 60px;
+  }
+}
+
+@media (max-width:600px) {
+  .bodyLogo {
+    display: none;
+  }
+
+}
+
+@media (max-width:800px) {
+  .main .bodyLogo {
+    margin-left: 0;
+  }
+}

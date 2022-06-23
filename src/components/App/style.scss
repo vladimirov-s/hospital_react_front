@@ -1,0 +1,15 @@
+.App {
+  text-align: center;
+  max-width: 989px;
+  min-width: 410px;
+  background: #C5E9FF;
+  margin: 0 auto;
+  overflow-x: clip;
+  font-family: roboto;
+  border: 1px solid transparent;
+}
+
+@font-face {
+  font-family: roboto;
+  src: url(../../fonts/Roboto-Thin.ttf);
+}
