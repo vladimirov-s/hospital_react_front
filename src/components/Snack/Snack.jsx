@@ -1,40 +1,33 @@
-import { useState, useContext, forwardRef, useEffect } from "react";
+import { observer } from "mobx-react-lite";
 import { Context } from "src/index";
+import * as React from "react";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 
-const Alert = forwardRef(function Alert(props, ref) {
+const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant='filled' {...props} />;
 });
 
 const Snack = () => {
-  const store = useContext(Context);
-  const [message, setMessage] = useState("");
-  const [openSnack, setOpenSnack] = useState(false);
-
-  const mySubscriber = () => {
-    setMessage(store.message);
-    setOpenSnack(true);
-  };
-
-  useEffect(() => {
-    store.subscribe("message for Snack", mySubscriber);
-  }, []);
+  const store = React.useContext(Context);
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
     }
-    setOpenSnack(false);
+    store.setOpenSnack(false);
   };
 
   return (
-    <Snackbar open={openSnack} autoHideDuration={5000} onClose={handleClose}>
+    <Snackbar
+      open={store.openSnack}
+      autoHideDuration={5000}
+      onClose={handleClose}>
       <Alert severity='warning' onClose={handleClose} sx={{ width: "100%" }}>
-        {message}
+        {store.message}
       </Alert>
     </Snackbar>
   );
 };
 
-export default Snack;
+export default observer(Snack);

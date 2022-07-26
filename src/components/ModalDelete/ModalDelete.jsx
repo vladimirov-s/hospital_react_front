@@ -1,3 +1,4 @@
+import { observer } from "mobx-react-lite";
 import { Context } from "src/index";
 import { useContext } from "react";
 import Button from "@mui/material/Button";
@@ -8,7 +9,7 @@ const ModalDelete = ({ id, setList }) => {
 
   const confirmHandler = async (id) => {
     const temp = await store.deleteAppointment(id);
-    setList(temp.data);
+    setList(temp);
     store.setTypeOfTask("");
   };
 
@@ -45,4 +46,4 @@ const ModalDelete = ({ id, setList }) => {
   );
 };
 
-export default ModalDelete;
+export default observer(ModalDelete);

@@ -4,6 +4,7 @@ import { React, useState, useContext } from "react";
 import Button from "@mui/material/Button";
 import { doctors } from "src/helper/constants";
 import "./style.scss";
+import { observer } from "mobx-react-lite";
 
 const CreateAppointment = ({ setList }) => {
   const store = useContext(Context);
@@ -36,8 +37,9 @@ const CreateAppointment = ({ setList }) => {
   };
 
   const createAppointment = async () => {
-    const temp = await store.createAppont(appoint);
-    setList(temp.data);
+    await store.createAppont(appoint);
+    const appointments = await store.getAppointments();
+    setList(appointments);
     setAppoint({ ...appoint, customer: "", doctor: "", complaint: "" });
   };
 
@@ -120,4 +122,4 @@ const CreateAppointment = ({ setList }) => {
   );
 };
 
-export default CreateAppointment;
+export default observer(CreateAppointment);

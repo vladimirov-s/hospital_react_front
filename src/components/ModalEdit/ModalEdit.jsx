@@ -1,5 +1,6 @@
 import { Context } from "src/index";
-import { React, useContext, useEffect, useState } from "react";
+import { observer } from "mobx-react-lite";
+import { React, useContext, useState } from "react";
 import { Button } from "@mui/material";
 import moment from "moment";
 import { doctors } from "src/helper/constants";
@@ -8,26 +9,18 @@ import "./style.scss";
 const ModalEdit = ({ id, setList }) => {
   const store = useContext(Context);
   const universalRegExp = /^[а-яА-Яa-zA-Z\s.]{2,30}$/;
-  const [date, setDate] = useState(store.stateFields.date);
+  const date = store.stateFields.date;
   const { customer, doctor, complaint } = store.stateFields;
-  const [appoint, setAppoint] = useState({
-    customer: customer,
-    doctor: doctor,
-    complaint: complaint,
+  const [appointment, setAppoint] = useState({
+    customer,
+    doctor,
+    complaint,
   });
-
-  const dateHandler = () => {
-    setDate(store.stateFields.date);
-  };
-
-  useEffect(() => {
-    store.subscribe("condition of the date", dateHandler);
-  }, []);
 
   const confirmHandler = async (id) => {
     let counter = 0;
-    for (const key in appoint) {
-      if (universalRegExp.test(String(appoint[key]))) {
+    for (const key in appointment) {
+      if (universalRegExp.test(String(appointment[key]))) {
         counter++;
       }
 
@@ -44,8 +37,9 @@ const ModalEdit = ({ id, setList }) => {
   };
 
   const editAppoint = async (id) => {
-    const temp = await store.editAppoint(id, appoint, date);
-    setList(temp.data);
+    await store.editAppoint(id, appointment, date);
+    const appointments = await store.getAppointments();
+    setList(appointments);
   };
 
   const cancelHandler = (e) => {
@@ -70,18 +64,18 @@ const ModalEdit = ({ id, setList }) => {
               className='modal_textFields'
               type='text'
               placeholder='Пациент'
-              value={appoint.customer}
+              value={appointment.customer}
               onChange={(e) => {
-                setAppoint({ ...appoint, customer: e.target.value });
+                setAppoint({ ...appointment, customer: e.target.value });
               }}
             />
             <span className='modal_fieldTitle'>Доктор</span>
             <select
               className='modal_textFields'
               onChange={(e) => {
-                setAppoint({ ...appoint, doctor: e.target.value });
+                setAppoint({ ...appointment, doctor: e.target.value });
               }}>
-              <option value=''>{appoint.doctor}</option>
+              <option value=''>{appointment.doctor}</option>
               {doctors?.map((element, idx) => (
                 <option key={`elnt${idx}`} value={element.name}>
                   {element.name}
@@ -99,9 +93,9 @@ const ModalEdit = ({ id, setList }) => {
             <textarea
               className='modal_textFields'
               placeholder='Текст жалобы на приеме'
-              value={appoint.complaint}
+              value={appointment.complaint}
               onChange={(e) => {
-                setAppoint({ ...appoint, complaint: e.target.value });
+                setAppoint({ ...appointment, complaint: e.target.value });
               }}
             />
           </div>
@@ -125,4 +119,4 @@ const ModalEdit = ({ id, setList }) => {
   );
 };
 
-export default ModalEdit;
+export default observer(ModalEdit);

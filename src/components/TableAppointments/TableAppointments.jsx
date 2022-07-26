@@ -1,5 +1,6 @@
 import { Context } from "src/index";
 import { React, useContext } from "react";
+import { observer } from "mobx-react-lite";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import moment from "moment";
@@ -43,4 +44,4 @@ const TableAppointments = ({ visit, setList, setId }) => {
   );
 };
 
-export default TableAppointments;
+export default observer(TableAppointments);

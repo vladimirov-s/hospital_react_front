@@ -1,12 +1,12 @@
+import { makeAutoObservable, toJS } from "mobx";
 import AppointmentService from "src/services/Authservise";
+import AuthService from "../services/Authservise";
 import AppointService from "src/services/AppointmentService";
 import _ from "lodash";
 
 export default class Store {
   user = {};
   isAuth = false;
-  messages = {};
-  lastUid = -1;
   message = "";
   isLoading = false;
   allAppointments = [];
@@ -23,6 +23,10 @@ export default class Store {
     date: "",
     complaint: "",
   };
+
+  constructor() {
+    makeAutoObservable(this);
+  }
 
   setRangeDates(boolean) {
     this.rangeDates = boolean;
@@ -41,11 +45,15 @@ export default class Store {
   }
 
   primarySortAppoints() {
-    this.setFilteredSorted(_.sortBy(this.allAppointments, this.sortBy));
+    this.setFilteredSorted(
+      _.sortBy(toJS(this.allAppointments), toJS(this.sortBy))
+    );
   }
 
   secondarySortAppoints() {
-    this.setFilteredSorted(_.sortBy(this.filteredSorted, this.sortBy));
+    this.setFilteredSorted(
+      _.sortBy(toJS(this.filteredSorted), toJS(this.sortBy))
+    );
   }
 
   getFields() {
@@ -58,12 +66,10 @@ export default class Store {
 
   setTypeOfTask(string) {
     this.typeOfTask = string;
-    this.publish("State type of task");
   }
 
   setDate(date) {
     this.stateFields.date = date;
-    this.publish("condition of the date");
   }
 
   setFields(a, b, d) {
@@ -80,36 +86,22 @@ export default class Store {
     this.allAppointments = collection;
   }
 
+  setAuth(boolean) {
+    this.isAuth = boolean;
+  }
+
   setIsLoading(boolean) {
     this.isLoading = boolean;
   }
 
+  setOpenSnack(boolean) {
+    this.openSnack = boolean;
+  }
+
   snackHolder(string) {
+    this.openSnack = true;
     this.message = string;
-    this.publish("message for Snack");
   }
-
-  publish(message) {
-    const subscribers = this.messages[message];
-    if (this.message.hasOwnProperty(message)) {
-      return;
-    }
-
-    for (let s in subscribers) {
-      if (Object.prototype.hasOwnProperty.call(subscribers, s)) {
-        subscribers[s](message);
-      }
-    }
-  }
-
-  subscribe = (message, func) => {
-    if (!this.message.hasOwnProperty(message)) {
-      this.messages[message] = {};
-    }
-    let token = "uid_" + String(++this.lastUid);
-    this.messages[message][token] = func;
-    return token;
-  };
 
   setUser(user) {
     this.user = user;
@@ -119,7 +111,6 @@ export default class Store {
     try {
       await AppointmentService.logout();
       this.isAuth = false;
-      this.publish("state Auth");
       this.setUser({});
     } catch (e) {
       if (e.code === "ERR_NETWORK") {
@@ -135,7 +126,6 @@ export default class Store {
     try {
       const response = await AppointmentService.login(name, password);
       this.isAuth = true;
-      this.publish("state Auth");
       this.setUser(response.data.user);
     } catch (e) {
       if (e.code === "ERR_NETWORK") {
@@ -149,12 +139,8 @@ export default class Store {
 
   async registration(username, password) {
     try {
-      const response = await AppointmentService.registration(
-        username,
-        password
-      );
+      const response = await AuthService.registration(username, password);
       this.isAuth = true;
-      this.publish("state Auth");
       this.setUser(response.data.user);
     } catch (e) {
       if (e.code === "ERR_NETWORK") {
@@ -170,10 +156,9 @@ export default class Store {
   async checkAuth() {
     this.setIsLoading(true);
     try {
-      const response = await AppointmentService.refresh();
-      this.isAuth = true;
+      const response = await AuthService.refresh();
+      this.setAuth(true);
       this.setUser(response.data);
-      this.publish("state Auth");
     } catch (e) {
       return e;
     } finally {
@@ -200,7 +185,7 @@ export default class Store {
   async getAppointments() {
     try {
       const response = await AppointService.getAppointments();
-      this.setAllAppointments(response.data.data);
+      this.setAllAppointments(response.data);
       return response.data;
     } catch (e) {
       if (e.code === "ERR_NETWORK") {
@@ -214,7 +199,7 @@ export default class Store {
 
   async createAppont(visit) {
     try {
-      await AppointService.createAppont(this.user, visit);
+      await AppointService.createAppont(visit);
       const response = await AppointService.getAppointments();
       this.setAllAppointments(response.data.data);
       return response.data;

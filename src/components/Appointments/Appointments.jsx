@@ -1,3 +1,4 @@
+import { observer } from "mobx-react-lite";
 import { React, useState, useContext, useEffect } from "react";
 import Snack from "components/Snack/Snack";
 import Header from "components//Header/Header";
@@ -13,20 +14,14 @@ const Appointments = () => {
   const store = useContext(Context);
   const [id, setId] = useState("");
   const [list, setList] = useState([]);
-  const [typeOfTask, setTypeOfTask] = useState("");
-
-  const typeOfTaskHandler = () => {
-    setTypeOfTask(store.typeOfTask);
-  };
 
   const fetchData = async () => {
     const temp = await store.getAppointments();
-    setList(temp.data);
+    setList(temp);
   };
 
   useEffect(() => {
     fetchData();
-    store.subscribe("State type of task", typeOfTaskHandler);
   }, []);
 
   return (
@@ -62,11 +57,13 @@ const Appointments = () => {
           </div>
         </div>
       </div>
-      {typeOfTask === "delet" && <ModalDelete setList={setList} id={id} />}
-      {typeOfTask === "edit" && <ModalEdit setList={setList} id={id} />}
+      {store.typeOfTask === "delet" && (
+        <ModalDelete setList={setList} id={id} />
+      )}
+      {store.typeOfTask === "edit" && <ModalEdit setList={setList} id={id} />}
       <Snack />
     </>
   );
 };
 
-export default Appointments;
+export default observer(Appointments);

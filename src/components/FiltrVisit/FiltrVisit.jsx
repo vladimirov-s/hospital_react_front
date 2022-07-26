@@ -15,10 +15,10 @@ const FiltrVisit = ({ setList }) => {
 
   const handleSortBy = (e) => {
     setSortBy(e.target.value);
-    if (e.target.value === "customerName") {
+    if (e.target.value === "customer") {
       store.setSort("customerName");
     }
-    if (e.target.value === "doctorName") {
+    if (e.target.value === "doctor") {
       store.setSort("doctorName");
     }
     if (e.target.value === "date") {
@@ -62,15 +62,15 @@ const FiltrVisit = ({ setList }) => {
     store.setRangeDates(true);
     const start = moment(minDate);
     const end = moment(maxDate);
-    const temp = store.allAppointments;
-    const tmp = [];
-    temp.forEach((element) => {
+    const dirtyArray = store.allAppointments;
+    const cleanArray = [];
+    dirtyArray.forEach((element) => {
       const compareDate = moment(element.date);
       if (compareDate.isBetween(start, end)) {
-        tmp.push(element);
+        cleanArray.push(element);
       }
     });
-    store.setFilteredSorted(tmp);
+    store.setFilteredSorted(cleanArray);
     sortAction();
     setList(store.filteredSorted);
   };
