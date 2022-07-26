@@ -1,3 +1,4 @@
+import { observer } from "mobx-react-lite";
 import { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
@@ -41,23 +42,23 @@ const Login = () => {
 
   return (
     <div>
-      <form onSubmit={blurHandler} className='auth__form'>
-        <p className='auth__form__paragraph'>Войти в систему </p>
-        <div className='auth__form__bodyForm'>
-          <label className='auth__form__bodyForm_loginandpassword'>
+      <form onSubmit={blurHandler} className='auth_form'>
+        <p className='auth_form_paragraph'>Войти в систему </p>
+        <div className='auth_form_bodyForm'>
+          <label className='auth_form_bodyForm_loginandpassword'>
             Логин:
             <input
-              className='auth__form__bodyForm_loginandpassword__textfield'
+              className='auth_form_bodyForm_loginandpassword_textfield'
               name='username'
               placeholder='username'
               autoComplete='off'
               onChange={(e) => changeHandler(e.target.value, "username")}
             />
           </label>
-          <label className='auth__form__bodyForm_loginandpassword'>
+          <label className='auth_form_bodyForm_loginandpassword'>
             <span> Пароль:</span>
             <input
-              className='auth__form__bodyForm_loginandpassword__textfield'
+              className='auth_form_bodyForm_loginandpassword_textfield'
               type={showPass}
               name='password'
               placeholder='password'
@@ -66,7 +67,7 @@ const Login = () => {
             <i
               title={showPass === "text" ? "Скрыть пароль" : "Показать пароль"}
               onClick={showPassword}
-              className='auth__form__bodyForm_loginandpassword_showPassword'>
+              className='auth_form_bodyForm_loginandpassword_showPassword'>
               {showPass !== "text" ? (
                 <RemoveRedEyeIcon />
               ) : (
@@ -75,9 +76,9 @@ const Login = () => {
             </i>
           </label>
         </div>
-        <div className='auth__form__botomblok'>
-          <button className='auth__form__botomblok__submit'>Вход</button>
-          <Link className='auth__form__botomblok_link' to='/signup'>
+        <div className='auth_form_botomblok'>
+          <button className='auth_form_botomblok_submit'>Вход</button>
+          <Link className='auth_form_botomblok_link' to='/signup'>
             Зарегистрироваться
           </Link>
         </div>
@@ -86,4 +87,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default observer(Login);

@@ -1,0 +1,54 @@
+.filter {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+}
+
+.filter_select {
+  padding: 10px 0;
+  min-width: 130px;
+}
+
+.filter_sortBy {
+  grid-column: 2;
+}
+
+.filter_item {
+  margin-right: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around
+}
+
+.filter_icon {
+  border-radius: 5px;
+  display: flex;
+
+  &:hover {
+    box-shadow: 0 0 4px 1px #7b93c5;
+    cursor: pointer;
+  }
+}
+
+.filter_date {
+  grid-column: 3;
+  grid-row: 2;
+}
+
+.filter_itemSetDates {
+  grid-column: 1 / 4;
+  grid-row: 2;
+}
+
+.filter_wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30%;
+}
+
+.filter_rangeDates {
+  padding: 7px 10px;
+  min-width: 100px;
+  width: 50%;
+}

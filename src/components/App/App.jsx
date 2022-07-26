@@ -1,3 +1,4 @@
+import { observer } from "mobx-react-lite";
 import { useContext, useEffect, useState } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { Context } from "src/index";
@@ -7,24 +8,12 @@ import "./style.scss";
 
 const App = () => {
   const store = useContext(Context);
-  const [isAuth, setIsAuth] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-
-  const authHolder = () => {
-    setIsAuth(store.isAuth);
-  };
-
-  const loadingHolder = () => {
-    setIsLoading(store.isLoading);
-  };
 
   useEffect(() => {
     store.checkAuth();
-    store.subscribe("state Loading", loadingHolder);
-    store.subscribe("state Auth", authHolder);
-  }, []);
+  }, [store]);
 
-  if (isLoading) {
+  if (store.isLoading) {
     return (
       <div className='App'>
         <h5>Загрузка....</h5>
@@ -32,7 +21,7 @@ const App = () => {
     );
   }
 
-  if (isAuth) {
+  if (store.isAuth) {
     return (
       <div className='App'>
         <Routes>
@@ -60,4 +49,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default observer(App);

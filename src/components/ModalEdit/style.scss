@@ -1,0 +1,32 @@
+.modal_editForm {
+  display: flex;
+  flex-wrap: wrap;
+  width: calc(100% - 70px);
+  margin: 20px 35px 70px 35px;
+
+  >* {
+    flex: 100%;
+  }
+
+  select.modal_textFields {
+    padding: 8px;
+  }
+}
+
+.modal_fieldTitle {
+  text-align: start;
+  padding: 7px 0;
+  margin-top: 1px;
+}
+
+.modal_textFields {
+  background-color: #fff;
+  border: 1px solid #22222238;
+  outline-color: #22222298;
+  line-height: 2.4;
+  margin-bottom: 15px;
+}
+
+.bigger {
+  top: calc(50% - 315px);
+}

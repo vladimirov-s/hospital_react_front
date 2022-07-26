@@ -1,4 +1,5 @@
-import { useEffect, useState, useContext } from "react";
+import { observer } from "mobx-react-lite";
+import { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
@@ -43,18 +44,18 @@ const Signup = () => {
   };
 
   const changeHandler = (text, type) => {
-    setUserField({ ...userField.userfield, [type]: text });
+    setUserField({ ...userField, [type]: text });
   };
 
   return (
     <div>
-      <form className='auth__form' onSubmit={blurHandler}>
-        <p className='auth__form__paragraph'>Регистрация</p>
-        <div className='auth__form__bodyForm'>
-          <label className='auth__form__bodyForm_loginandpassword'>
+      <form className='auth_form' onSubmit={blurHandler}>
+        <p className='auth_form_paragraph'>Регистрация</p>
+        <div className='auth_form_bodyForm'>
+          <label className='auth_form_bodyForm_loginandpassword'>
             Логин:
             <input
-              className='auth__form__bodyForm_loginandpassword__textfield'
+              className='auth_form_bodyForm_loginandpassword_textfield'
               type='text'
               placeholder='username'
               name='username'
@@ -64,10 +65,10 @@ const Signup = () => {
             />
           </label>
 
-          <label className='auth__form__bodyForm_loginandpassword'>
+          <label className='auth_form_bodyForm_loginandpassword'>
             <span>Пароль:</span>
             <input
-              className='auth__form__bodyForm_loginandpassword__textfield'
+              className='auth_form_bodyForm_loginandpassword_textfield'
               type={showPass}
               name='password'
               placeholder='password'
@@ -77,7 +78,7 @@ const Signup = () => {
             <i
               title={showPass !== "text" ? "Показать пароль" : "Скрыть пароль"}
               onClick={showPassword}
-              className='auth__form__bodyForm_loginandpassword_showPassword'>
+              className='auth_form_bodyForm_loginandpassword_showPassword'>
               {showPass !== "text" ? (
                 <RemoveRedEyeIcon />
               ) : (
@@ -86,10 +87,10 @@ const Signup = () => {
             </i>
           </label>
 
-          <label className='auth__form__bodyForm_loginandpassword'>
+          <label className='auth_form_bodyForm_loginandpassword'>
             Повторите пароль:
             <input
-              className='auth__form__bodyForm_loginandpassword__textfield'
+              className='auth_form_bodyForm_loginandpassword_textfield'
               type={showPass}
               name='secondPassword'
               placeholder='password'
@@ -100,11 +101,11 @@ const Signup = () => {
             />
           </label>
         </div>
-        <div className='auth__form__botomblok'>
-          <button className='auth__form__botomblok__submit'>
+        <div className='auth_form_botomblok'>
+          <button className='auth_form_botomblok_submit'>
             Зарегистрироваться
           </button>
-          <Link className='auth__form__botomblok_link' to='/'>
+          <Link className='auth_form_botomblok_link' to='/'>
             Авторизоваться
           </Link>
         </div>
@@ -113,4 +114,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default observer(Signup);
